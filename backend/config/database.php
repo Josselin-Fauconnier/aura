@@ -3,7 +3,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USERNAME','root');
 define('DB_PASSWORD','');
-define('DB_DATABASE','auradev');
+define('DB_DATABASE','aura');
 
 define('DB_OPTIONS', [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

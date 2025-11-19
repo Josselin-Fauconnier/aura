@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 19 nov. 2025 à 09:21
+-- Généré le : mer. 19 nov. 2025 à 14:52
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `auradev`
+-- Base de données : `aura`
 --
 
 -- --------------------------------------------------------
