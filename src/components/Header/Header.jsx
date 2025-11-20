@@ -1,0 +1,12 @@
+// header basique avec la navbar à completer par toi Samuel 
+import NavBar from '../NavBar/NavBar';
+
+const Header = () => {
+  return (
+    <header>
+      <NavBar />
+    </header>
+  );
+};
+
+export default Header;
