@@ -32,7 +32,7 @@ function validate_input(array $requestData): array
     $errors = array();
     if (!isset($requestData["name"]))
         array_push($errors, "Error: name is not set");
-    elseif ($err = validate_input($requestData["name"]) != "")
+    elseif (($err = validate_name($requestData["name"])) != "")
         array_push($errors, $err);
 
     /*  string $firstname = "",
@@ -47,11 +47,10 @@ function validate_input(array $requestData): array
 
 function customer_register(array $requestData): void
 {
-    var_dump($requestData);
     $requestData = validate_input($requestData);
 
     if (count($requestData["errors"]) > 0) {
-        json_encode(["message" => $requestData["errors"]]);
+        echo json_encode(["message" => $requestData["errors"]]);
         http_response_code(400); // BAD REQUEST?
         return;
     }
