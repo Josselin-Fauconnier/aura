@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 19 nov. 2025 à 14:52
+-- Généré le : jeu. 20 nov. 2025 à 09:34
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -67,6 +67,7 @@ CREATE TABLE `customers` (
   `name` varchar(50) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `phone_number` varchar(20) NOT NULL,
   `address` varchar(255) NOT NULL,
   `sexe` enum('M','F','Autre') NOT NULL,
