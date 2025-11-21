@@ -1,11 +1,23 @@
 <?php
 
+/**
+ * METHODS: POST, OPTIONS
+ * 
+ * 
+ * -- POST: INSCRIPTION CLIENT
+ * PARAMS: email, password, firstname, name, address, phone_number, sex, additional_information
+ * AUTH: none
+ * RETURN: message
+ * 
+ */
+
 declare(strict_types=1);
 
 require_once "../connection.php";
 
 header("Content-Type: application/json; charset=UTF-8");
 
+//var_dump($_SERVER['REQUEST_METHOD']);
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':

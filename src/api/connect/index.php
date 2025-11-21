@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * METHODS: GET, OPTIONS
+ * 
+ * -- GET:
+ * PARAMS : email, password
+ * AUTH: none
+ * RETURN: ?token, message
+ */
+
 declare(strict_types=1);
 
 require_once "../connection.php";
