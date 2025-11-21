@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+
+/**
+ * Classe de connexion. 
+ * Pour récuperer une connexion à la database: $conn = Connection::getConnection();
+ */
 class Connection
 {
     private static ?pdo $conn = null;
