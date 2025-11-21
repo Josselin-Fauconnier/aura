@@ -1,5 +1,25 @@
 <?php
 
+/**
+ * METHODS: GET, POST, DELETE, OPTIONS
+ * 
+ * -- GET: RECUPERATION DONNEES CLIENT
+ * PARAMS : email OR id_customer
+ * AUTH: token matching id_customer OR admin token
+ * RETURN: id_customer, email, firstname, name, address, phone_number, sex, additional_information, crated_at, updated_at
+ * 
+ * -- POST: MODIFICATION DONNEES CLIENT
+ * PARAMS: id_customer, ?email, ?password, ?firstname, ?name, ?address, ?phone_number, ?sex, ?additional_information
+ * AUTH: token matching id_customer OR admin token
+ * RETURN: message
+ * 
+ * -- DELETE: SUPPRIMER CLIENT
+ * PARAMS: id_customer OR email
+ * AUTH: token matching id_customer OR admin token
+ * RETURN: message
+ */
+
+
 declare(strict_types=1);
 
 require_once "../connection.php";

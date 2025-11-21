@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/**
+ * Fichier avec les fonctions necessaires pour manipuler les tokens de connexion à l'API
+ */
+
 session_start();
 
 if (!isset($_SESSION["token_list"]))
@@ -15,7 +19,7 @@ function generate_token(): string
     return $token;
 }
 
-// On verifie le token d'acces: s'il existe, si l'utilisateur 
+// On verifie le token d'acces: s'il existe, si l'utilisateur a acces à la donné ou si token admin
 function check_token(string $token, int $id = -1, bool $admin = false): bool
 {
     /*  var_dump($_SESSION["token_list"]);
@@ -33,6 +37,7 @@ function check_token(string $token, int $id = -1, bool $admin = false): bool
     return false;
 }
 
+// Ajout du token à la liste des tokens, format: [ ... token => { "id_customer" => int , "admin" => bool}]
 function add_token(string $token, int $id, bool $admin = false): void
 {
     $_SESSION["token_list"][$token] = ["id" => $id, "admin" => $admin];
