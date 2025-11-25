@@ -5,7 +5,7 @@ import Services from './pages/Services';
 import ServiceDetail from './pages/ServiceDetail';
 import Login from './pages/Login';
 import Register from './pages/Register'; 
-import './App.css'; 
+import './styles/main.css'
 
 const App = () => {
   return (

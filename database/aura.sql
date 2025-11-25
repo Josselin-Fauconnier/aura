@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : jeu. 20 nov. 2025 à 09:34
+-- Généré le : ven. 21 nov. 2025 à 10:56
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -70,7 +70,7 @@ CREATE TABLE `customers` (
   `password` varchar(255) NOT NULL,
   `phone_number` varchar(20) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `sexe` enum('M','F','Autre') NOT NULL,
+  `sex` enum('M','F','Autre') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `additional_information` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -132,7 +132,7 @@ CREATE TABLE `services` (
   `id_customer` int UNSIGNED NOT NULL,
   `id_offer` int UNSIGNED NOT NULL,
   `service_date` datetime NOT NULL,
-  `statut` enum('en_attente','validé','effectué','payé','annulé') NOT NULL DEFAULT 'en_attente',
+  `status` enum('en_attente','validé','effectué','payé','annulé') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'en_attente',
   `amount` decimal(10,2) NOT NULL,
   `payment_date` datetime DEFAULT NULL,
   `payment_method` varchar(50) DEFAULT NULL,
@@ -158,12 +158,12 @@ CREATE TABLE `service_providers` (
   `profile_picture` varchar(255) DEFAULT 'default.WebP',
   `education_experience` text,
   `subscriber` enum('none','basique') DEFAULT 'none',
-  `sexe` enum('M','F','Autre') NOT NULL,
+  `sex` enum('M','F','Autre') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `SIREN` char(9) DEFAULT NULL,
   `additional_information` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `statut` enum('EI','Micro-entreprise','EURL','SASU','SARL','SAS') NOT NULL DEFAULT 'Micro-entreprise'
+  `status` enum('EI','Micro-entreprise','EURL','SASU','SARL','SAS') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Micro-entreprise'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
