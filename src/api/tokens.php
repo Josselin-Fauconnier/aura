@@ -37,9 +37,9 @@ function check_token(string $token, int $id = -1, bool $admin = false): bool
     return false;
 }
 
-// Ajout du token à la liste des tokens, format: [ ... token => { "id_customer" => int , "admin" => bool}]
-function add_token(string $token, int $id, bool $admin = false): void
+// Ajout du token à la liste des tokens, format: [ ... token => { "id_customer" => int , "role" => string}] ;  les roles possibles seront: customer, service_provider, admin
+function add_token(string $token, int $id, string $role = "customer"): void
 {
-    $_SESSION["token_list"][$token] = ["id" => $id, "admin" => $admin];
+    $_SESSION["token_list"][$token] = ["id" => $id, "role" => $role];
     //var_dump($_SESSION["token_list"]);
 }
