@@ -20,18 +20,15 @@ function generate_token(): string
 }
 
 // On verifie le token d'acces: s'il existe, si l'utilisateur a acces à la donné ou si token admin
-function check_token(string $token, int $id = -1, bool $admin = false): bool
+function check_token(string $token, int $id = -1): bool
 {
     /*  var_dump($_SESSION["token_list"]);
     echo "/n -- " . $token . " -- " . $id; */
 
     if (isset($_SESSION["token_list"][$token])) {
-
-        if ($id !== -1 && $admin === false)
-            return false;
-        if ($id !== -1 && $_SESSION["token_list"][$token]["id"] === $id)
+        if ($_SESSION["token_list"][$token]["role"] === "admin")
             return true;
-        if ($admin !== false && $_SESSION["token_list"][$token]["admin"] === true)
+        if ($id !== -1 && $_SESSION["token_list"][$token]["id"] === $id)
             return true;
     }
     return false;
