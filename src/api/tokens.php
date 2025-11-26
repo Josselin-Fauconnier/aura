@@ -39,11 +39,11 @@ function add_token(string $token, int $id, bool $isAdmin = false): void
 
 
 // On verifie le token d'acces: s'il existe, si l'utilisateur a acces à la donné ou si token admin
- function check_token(string $token, int $id = -1, bool $isAdmin = false): bool
+function check_token(string $token, int $id = -1, bool $isAdmin = false): bool
 {
     $conn = Connection::getConnection();
 
-    
+
     $sql = "SELECT id_customer, admin
             FROM tokens
             WHERE token = :token";
@@ -52,7 +52,7 @@ function add_token(string $token, int $id, bool $isAdmin = false): void
     $stmt->execute([":token" => $token]);
     $tokenData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    
+
     if (!$tokenData) {
         return false;
     }

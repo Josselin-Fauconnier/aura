@@ -19,7 +19,7 @@ header("Content-Type: application/json; charset=UTF-8");
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $requestData = $_POST;
-        customer_connect($requestData);
+        provider_connect($requestData);
         break;
     default:
         echo json_encode(["message" => "Invalid request"]);
@@ -27,21 +27,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 }
 
-function customer_connect(array $requestData): void
+function provider_connect(array $requestData): void
 {
     if (!isset($requestData["email"])) {
         http_response_code(400);
         echo json_encode(["message" => "Login required"]);
+        return;
     }
     if (!isset($requestData["password"])) {
         http_response_code(400);
         echo json_encode(["message" => "Password required"]);
+        return;
     }
 
     $conn = Connection::getConnection();
 
     try {
-        $sql = "SELECT * FROM customers WHERE email=:login";
+        $sql = "SELECT * FROM service_providers WHERE email=:login";
         $stmt = $conn->prepare($sql);
         $stmt->execute([
             ":login" => $requestData["email"]
@@ -60,7 +62,7 @@ function customer_connect(array $requestData): void
     }
     if (password_verify($requestData["password"], $res["password"])) {
         $token = generate_token();
-        add_token($token, $res["id_customer"]);
+        add_token($token, $res["id_provider"], "provider");
         http_response_code(202); // ACCEPTED
         echo json_encode(["token" => $token, "message" => "User logged in"]);
         return;

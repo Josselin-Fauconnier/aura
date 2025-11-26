@@ -1,0 +1,29 @@
+@use "./_variables" as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $font-family-secondary;
+  background-color: $color-bg;
+}
+
+.aura-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.aura-main {
+  flex: 1;
+  padding: $spacing-4;
+}

@@ -14,7 +14,7 @@
 declare(strict_types=1);
 
 require_once "../connection.php";
-require_once "../customer_validation.php";
+require_once "../provider_validation.php";
 
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -22,7 +22,7 @@ header("Content-Type: application/json; charset=UTF-8");
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $requestData = $_POST;
-        customer_register($requestData);
+        provider_register($requestData);
         break;
     case 'OPTIONS':
         echo json_encode(["message" => "OPTIONS"]);
@@ -34,7 +34,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 }
 
 
-function customer_register(array $requestData): void
+function provider_register(array $requestData): void
 {
     $requestData = validate_input_register($requestData);
     $requestData = sanitize_input($requestData);
@@ -50,7 +50,7 @@ function customer_register(array $requestData): void
     $conn = Connection::getConnection();
 
     try {
-        $sql = "INSERT INTO customers (name, firstname, email, password, phone_number, address, sex, additional_information) VALUES (:name, :firstname, :email, :password, :phone_number, :address, :sex, :additional_info);";
+        $sql = "INSERT INTO service_providers (name, firstname, email, password, phone_number, address, profile_picture, education_experience, subscriber, sex, SIREN, additional_information, statut) VALUES (:name, :firstname, :email, :password, :phone_number, :address, :profile_picture, :education_experience, :subscriber, :sex, :SIREN, :additional_info, :statut);";
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute([
             ":name" => $requestData["name"],
@@ -59,12 +59,18 @@ function customer_register(array $requestData): void
             ":password" => $requestData["password"],
             ":phone_number" => $requestData["phone_number"],
             ":address" => $requestData["address"] ?? "",
-            ":sex" => $requestData["sex"] ?? "M",
-            ":additional_info" => $requestData["additional_information"] ?? ""
+            ":profile_picture" => $requestData["profile_picture"] ?? "",
+            ":education_experience" => $requestData["education_experience"] ?? "",
+            ":subscriber" => "none",
+            ":sex" => $requestData["sex"] ?? "Autre",
+            ":SIREN" => $requestData["SIREN"],
+            ":additional_info" => $requestData["additional_information"] ?? "",
+            ":statut" => $requestData["statut"]
         ]);
     } catch (PDOException $e) {
         echo json_encode(["message" => $e->getMessage()]);
         http_response_code(500);
+        return;
     }
-    echo json_encode(["message" => "Customer succesfully created"]);
+    echo json_encode(["message" => "Service provider succesfully created"]);
 }
