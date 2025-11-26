@@ -33,11 +33,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
         customer_get($requestData);
         break;
     case 'DELETE':
-        $requestData = $_DELETE;
         if (isset($_SERVER["HTTP_X_API_KEY"])) {
             $requestData["token"] = $_SERVER["HTTP_X_API_KEY"]; //ICI ON MET LE TOKEN
         }
-        customer_delete($requestData);
+        customer_delete();
         break;
     default:
         echo json_encode(["message" => "Invalid request"]);
@@ -61,10 +60,10 @@ function customer_get(array $requestData): void
             $sql = "SELECT * FROM customers WHERE id_customer=:id";
             $stmt = $conn->prepare($sql);
             $stmt->execute([
-                ":id" => $requestData["id"]
+                ":id" => $requestData["id_customer"]
             ]);
         } else {
-            $sql = "SELECT * FROM customers WHERE emailr=:email";
+            $sql = "SELECT * FROM customers WHERE email=:email";
             $stmt = $conn->prepare($sql);
             $stmt->execute([
                 ":email" => $requestData["email"]
@@ -92,4 +91,10 @@ function customer_get(array $requestData): void
         echo json_encode(["message" => "Access forbidden"]);
         http_response_code(403);
     }
+}
+
+function customer_delete(): void
+{
+    $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    echo $url;
 }

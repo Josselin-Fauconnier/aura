@@ -1,7 +1,7 @@
 <?php
 
 /**
- * METHODS: POST, PUT, DELETE, OPTIONS
+ * METHODS: POST, OPTIONS
  * 
  * -- POST: MODIFICATION DONNEES CLIENT
  * PARAMS: id_customer, ?email, ?password, ?firstname, ?name, ?address, ?phone_number, ?sex, ?additional_information
@@ -44,6 +44,9 @@ function build_update_query(array $requestData): array
             $execute[":" . $key] = $value;
         }
     }
+    if (strlen($fields) > 0)
+        $fields = substr($fields, 0, strlen($fields) - 2);
+    $execute[":id"] = intval($requestData["id_customer"]);
     $res["fields"] = $fields;
     $res["execute"] = $execute;
     return $res;
@@ -51,9 +54,15 @@ function build_update_query(array $requestData): array
 
 function customer_update(array $requestData): void
 {
-    var_dump($requestData);
+    //print_r($requestData);
     $requestData = validate_input_update($requestData);
     $requestData = sanitize_input($requestData);
+
+    if (!isset($requestData["id_customer"])) {
+        echo json_encode(["message" => "No id_customer provided"]);
+        http_response_code(400); // BAD REQUEST?
+        return;
+    }
 
     if (count($requestData["errors"]) > 0) {
         echo json_encode(["message" => $requestData["errors"][0]]);
@@ -67,24 +76,22 @@ function customer_update(array $requestData): void
     $conn = Connection::getConnection();
 
     try {
-        print_r($requestData);
+        /*  print_r($requestData); */
         $build = build_update_query($requestData);
+        if (strlen($build["fields"]) === 0) {
+            echo json_encode(["message" => "No updates made"]);
+            http_response_code(400);
+            return;
+        }
+
         $sql = "UPDATE customers SET " . $build["fields"] . " WHERE id_customer=:id;";
-        var_dump($sql);
+        /* echo ($sql);
+        print_r($build["execute"]); */
         $stmt = $conn->prepare($sql);
-        /*  $res = $stmt->execute([
-            ":name" => $requestData["name"],
-            ":firstname" => $requestData["firstname"],
-            ":email" => $requestData["email"],
-            ":password" => $requestData["password"],
-            ":phone_number" => $requestData["phone_number"],
-            ":address" => $requestData["address"] ?? "",
-            ":sex" => $requestData["sex"] ?? "M",
-            ":additional_info" => $requestData["additional_info"] ?? ""
-        ]); */
+        $res = $stmt->execute($build["execute"]);
     } catch (PDOException $e) {
         echo json_encode(["message" => $e->getMessage()]);
         http_response_code(500);
     }
-    echo json_encode(["message" => "Customer succesfully created"]);
+    echo json_encode(["message" => "Customer succesfully updated"]);
 }

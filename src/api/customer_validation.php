@@ -38,8 +38,8 @@ function validate_phone_number(string $phone_number): string
 
 function validate_sex(string $sex): string
 {
-    if ($sex !== "M" && $sex !== "F")
-        return "Sex must be M or F";
+    if ($sex !== "M" && $sex !== "F" && $sex !== "Autre")
+        return "Sex must be M, F or Autre";
     return "";
 }
 
@@ -110,6 +110,10 @@ function validate_input_update(array $requestData): array
     if (isset($requestData["password"]) && isset($requestData["password_confirm"]))
         if (($err = validate_password($requestData["password"], $requestData["password_confirm"])) != "")
             array_push($errors, $err);
+    if (isset($requestData["password"]) && !isset($requestData["password_confirm"]))
+        array_push($errors, "Password and password confirm and both required");
+    if (!isset($requestData["password"]) && isset($requestData["password_confirm"]))
+        array_push($errors, "Password and password confirm and both required");
     if (isset($requestData["name"]))
         if (($err = validate_name($requestData["name"])) != "")
             array_push($errors, $err);

@@ -50,7 +50,7 @@ function customer_register(array $requestData): void
     $conn = Connection::getConnection();
 
     try {
-        $sql = "INSERT INTO customers (name, firstname, email, password, phone_number, address, sexe, additional_information) VALUES (:name, :firstname, :email, :password, :phone_number, :address, :sex, :additional_info);";
+        $sql = "INSERT INTO customers (name, firstname, email, password, phone_number, address, sex, additional_information) VALUES (:name, :firstname, :email, :password, :phone_number, :address, :sex, :additional_info);";
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute([
             ":name" => $requestData["name"],
@@ -60,7 +60,7 @@ function customer_register(array $requestData): void
             ":phone_number" => $requestData["phone_number"],
             ":address" => $requestData["address"] ?? "",
             ":sex" => $requestData["sex"] ?? "M",
-            ":additional_info" => $requestData["additional_info"] ?? ""
+            ":additional_info" => $requestData["additional_information"] ?? ""
         ]);
     } catch (PDOException $e) {
         echo json_encode(["message" => $e->getMessage()]);
