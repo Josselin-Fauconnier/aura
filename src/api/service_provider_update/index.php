@@ -1,21 +1,29 @@
 <?php
 
 /**
- * METHODS: POST, OPTIONS
+ * METHODS: GET, POST, DELETE, OPTIONS
  * 
- * -- POST: MODIFICATION DONNEES CLIENT
- * PARAMS: id_customer, ?email, ?password, ?firstname, ?name, ?address, ?phone_number, ?sex, ?additional_information
- * AUTH: token matching id_customer OR admin token
+ * -- GET: RECUPERATION DONNEES PRESTATAIRE
+ * PARAMS : email OR id_provider
+ * AUTH: token matching id_provider OR admin token
+ * RETURN: id_provider, name, firstname, email, phone_number, address, profile_picture, education_experience, subscriber, sexe, SIREN, additional_information, created_at, updated_at, statut
+ * 
+ * -- POST: MODIFICATION DONNEES PRESTATAIRE
+ * PARAMS: ?name, ?firstname, ?email, ?password, ?phone_number, ?address, ?profile_picture, ?education_experience, ?subscriber, ?sexe, ?SIREN, ?additional_information, ?statut
+ * AUTH: token matching id_provider OR admin token
  * RETURN: message
  * 
+ * -- DELETE: SUPPRIMER PRESTATARIE
+ * PARAMS: id_provider OR email
+ * AUTH: token matching id_provider OR admin token
+ * RETURN: message
  */
-
 
 declare(strict_types=1);
 
 require_once "../connection.php";
 require_once "../tokens.php";
-require_once "../customer_validation.php";
+require_once "../provider_validation.php";
 
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -25,7 +33,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (isset($_SERVER["HTTP_X_API_KEY"])) {
             $requestData["token"] = $_SERVER["HTTP_X_API_KEY"]; //ICI ON MET LE TOKEN
         }
-        customer_update($requestData);
+        provider_update($requestData);
         break;
     default:
         echo json_encode(["message" => "Invalid request"]);
@@ -39,27 +47,27 @@ function build_update_query(array $requestData): array
     $fields = "";
     $execute = array();
     foreach ($requestData as $key => $value) {
-        if (in_array($key, ["name", "firstname", "email", "phone_number", "address", "sex", "password", "additional_information"])) {
+        if (in_array($key, ["name", "firstname", "email", "password", "phone_number", "address", "profile_picture", "education_experience", "subscriber", "sex", "SIREN", "additional_information", "statut"])) {
             $fields .= $key . " = :" . $key . ", ";
             $execute[":" . $key] = $value;
         }
     }
     if (strlen($fields) > 0)
         $fields = substr($fields, 0, strlen($fields) - 2);
-    $execute[":id"] = intval($requestData["id_customer"]);
+    $execute[":id"] = intval($requestData["id_provider"]);
     $res["fields"] = $fields;
     $res["execute"] = $execute;
     return $res;
 }
 
-function customer_update(array $requestData): void
+function provider_update(array $requestData): void
 {
     //print_r($requestData);
     $requestData = validate_input_update($requestData);
     $requestData = sanitize_input($requestData);
 
-    if (!isset($requestData["id_customer"])) {
-        echo json_encode(["message" => "No id_customer provided"]);
+    if (!isset($requestData["id_provider"])) {
+        echo json_encode(["message" => "No id_provider in query"]);
         http_response_code(400); // BAD REQUEST?
         return;
     }
@@ -73,7 +81,7 @@ function customer_update(array $requestData): void
     if (isset($requestData["password"]))
         $requestData["password"] = password_hash($requestData["password"], PASSWORD_DEFAULT);
 
-    $access = check_token($requestData["token"], intval($requestData["id_customer"]));
+    $access = check_token($requestData["token"], intval($requestData["id_provider"]));
     if (!$access) {
         echo json_encode(["message" => "Unauthorized"]);
         http_response_code(403);
@@ -91,7 +99,7 @@ function customer_update(array $requestData): void
             return;
         }
 
-        $sql = "UPDATE customers SET " . $build["fields"] . " WHERE id_customer=:id;";
+        $sql = "UPDATE service_providers SET " . $build["fields"] . " WHERE id_provider=:id;";
         /* echo ($sql);
         print_r($build["execute"]); */
         $stmt = $conn->prepare($sql);
@@ -100,5 +108,5 @@ function customer_update(array $requestData): void
         echo json_encode(["message" => $e->getMessage()]);
         http_response_code(500);
     }
-    echo json_encode(["message" => "Customer succesfully updated"]);
+    echo json_encode(["message" => "Provider succesfully updated"]);
 }
