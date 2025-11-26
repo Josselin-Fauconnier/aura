@@ -11,7 +11,7 @@ session_start();
 if (!isset($_SESSION["token_list"]))
     $_SESSION["token_list"] = [];
 
-require_once "../connection.php";
+require_once "connection.php";
 
 function generate_token(): string
 {
@@ -19,27 +19,52 @@ function generate_token(): string
     return $token;
 }
 
-// On verifie le token d'acces: s'il existe, si l'utilisateur a acces à la donné ou si token admin
-function check_token(string $token, int $id = -1, bool $admin = false): bool
+function add_token(string $token, int $id, bool $isAdmin = false): void
 {
-    /*  var_dump($_SESSION["token_list"]);
-    echo "/n -- " . $token . " -- " . $id; */
+    $conn = Connection::getConnection();
 
-    if (isset($_SESSION["token_list"][$token])) {
+    $sql = "INSERT INTO tokens (token, id_customer, admin)
+            VALUES (:token, :id_customer, :admin)";
 
-        if ($id !== -1 && $admin === false)
-            return false;
-        if ($id !== -1 && $_SESSION["token_list"][$token]["id"] === $id)
-            return true;
-        if ($admin !== false && $_SESSION["token_list"][$token]["admin"] === true)
-            return true;
-    }
-    return false;
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([
+        ":token"       => $token,
+        ":id_customer" => $id,
+        ":admin"       => $isAdmin ? 1 : 0
+    ]);
 }
 
-// Ajout du token à la liste des tokens, format: [ ... token => { "id_customer" => int , "admin" => bool}]
-function add_token(string $token, int $id, bool $admin = false): void
+
+
+
+
+// On verifie le token d'acces: s'il existe, si l'utilisateur a acces à la donné ou si token admin
+ function check_token(string $token, int $id = -1, bool $isAdmin = false): bool
 {
-    $_SESSION["token_list"][$token] = ["id" => $id, "admin" => $admin];
-    //var_dump($_SESSION["token_list"]);
+    $conn = Connection::getConnection();
+
+    
+    $sql = "SELECT id_customer, admin
+            FROM tokens
+            WHERE token = :token";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([":token" => $token]);
+    $tokenData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    
+    if (!$tokenData) {
+        return false;
+    }
+
+
+    if ($isAdmin === true) {
+        return (int)$tokenData["admin"] === 1;
+    }
+
+    if ($id !== -1) {
+        return (int)$tokenData["id_customer"] === $id;
+    }
+
+    return true;
 }

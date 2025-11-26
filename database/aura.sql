@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mar. 25 nov. 2025 à 09:30
+-- Généré le : mer. 26 nov. 2025 à 11:11
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -229,6 +229,19 @@ INSERT INTO `service_providers` (`id_provider`, `name`, `firstname`, `email`, `p
 (1, 'Martin', 'Sophie', 'sophie.martin@aura.com', '$2y$10$hashexample1', '0123456789', '15 rue de la Paix, 75001 Paris', 'default.WebP', 'CAP Esthétique, 5 ans d\'expérience', 'basique', 'F', '123456789', NULL, '2025-11-25 09:29:50', '2025-11-25 09:29:50', 'Micro-entreprise'),
 (2, 'Dubois', 'Pierre', 'pierre.dubois@aura.com', '$2y$10$hashexample2', '0987654321', '42 avenue des Services, 69001 Lyon', 'default.WebP', 'Formation aide à domicile, 3 ans d\'expérience', 'none', 'M', '987654321', NULL, '2025-11-25 09:29:50', '2025-11-25 09:29:50', 'Micro-entreprise');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `tokens`
+--
+
+CREATE TABLE `tokens` (
+  `token` varchar(255) NOT NULL,
+  `id_customer` int NOT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 --
 -- Index pour les tables déchargées
 --
@@ -291,6 +304,12 @@ ALTER TABLE `services`
 ALTER TABLE `service_providers`
   ADD PRIMARY KEY (`id_provider`),
   ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Index pour la table `tokens`
+--
+ALTER TABLE `tokens`
+  ADD PRIMARY KEY (`token`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées

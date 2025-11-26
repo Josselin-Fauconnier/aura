@@ -56,5 +56,3 @@ function comments_get(array $requestData) : void {
     http_response_code(200);
 
 }
-
-
