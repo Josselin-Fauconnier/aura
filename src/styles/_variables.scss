@@ -1,0 +1,54 @@
+
+
+$color-primary: #FFB798;     // Couleur pêche (Background de Section et de certaines Font)
+$color-secondary: #B8D3C4;   // Couleur Menthe
+
+$color-bg: #FFFBF6;          // Fond faux blanc
+$color-white: #FFFFFF;
+
+
+// Typographie
+$font-family-primary: 'Poppins', sans-serif;
+$font-family-secondary: 'Inter', sans-serif;
+
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.25rem;
+$font-size-xl: 1.875rem;
+$font-size-2xl: 2.25rem;
+
+// Space 
+$spacing-1: 0.25rem;
+$spacing-2: 0.5rem;
+$spacing-3: 0.75rem;
+$spacing-4: 1rem;
+$spacing-6: 1.5rem;
+$spacing-8: 2rem;
+$spacing-10: 2.5rem;
+$spacing-12: 3rem;
+$spacing-16: 4rem;
+
+// Border radius 
+$radius-sm: 0.375rem;
+$radius-md: 0.5rem;
+$radius-lg: 0.75rem;
+$radius-pill: 999px;
+
+// Ombre
+$shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.08);
+$shadow-medium: 0 20px 40px rgba(0, 0, 0, 0.12);
+
+// Règles à respecter
+//Esseyons de mettre en place des règles de bonne pratique.
+
+// Si fond blanc le texte secondaire est en primary ou secondary color
+$on-white-text: $color-secondary;
+$on-white-icon: $color-primary;
+
+// Si fond primaire ou secondaire texte blanc
+$on-color-text: $color-white;
+
+//Section très claire
+$bg-peach-light: rgba($color-primary, 0.25);
+$bg-mint-light: rgba($color-secondary, 0.2);

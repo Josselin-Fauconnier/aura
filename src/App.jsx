@@ -5,7 +5,7 @@ import Services from './pages/Services';
 import ServiceDetail from './pages/ServiceDetail';
 import Login from './pages/Login';
 import Register from './pages/Register'; 
-import './App.css'; 
+import './styles/main.css'
 
 const App = () => {
   return (
@@ -16,7 +16,8 @@ const App = () => {
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/connexion" element={<Login />} /> 
-          <Route path="/inscription" element={<Register />} /> 
+          <Route path="/inscription/client" element={<RegisterCustomer />} />
+          <Route path="/inscription/prestataire" element={<RegisterProvider />} />
           <Route path="*" element={<h1>404 - Page not found</h1>} />
         </Route>
       </Routes>
