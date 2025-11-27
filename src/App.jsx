@@ -4,9 +4,8 @@ import Home from './pages/Home';
 import Services from './pages/Services';
 import ServiceDetail from './pages/ServiceDetail';
 import Login from './pages/Login';
-import RegisterCustomer from './pages/RegisterCustomer';
-import RegisterProvider from './pages/RegisterProvider';
-import './App.css'; 
+import Register from './pages/Register'; 
+import './styles/main.css'
 
 const App = () => {
   return (
