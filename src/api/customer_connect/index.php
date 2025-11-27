@@ -60,7 +60,7 @@ function customer_connect(array $requestData): void
     }
     if (password_verify($requestData["password"], $res["password"])) {
         $token = generate_token();
-        add_token($token, $res["id_customer"]);
+        add_token($token, $res["id_customer"], "customer");
         http_response_code(202); // ACCEPTED
         echo json_encode(["token" => $token, "message" => "User logged in"]);
         return;
