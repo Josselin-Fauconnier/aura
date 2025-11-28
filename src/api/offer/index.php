@@ -201,6 +201,8 @@ function offer_register(array $requestData): void
     try {
         $sql = "INSERT INTO offers (description, duration, category, disponibility, perimeter_of_displacement, price, id_provider) VALUES (:description, :duration, :category, :disponibility, :perimeter_of_displacement, :price, :id_provider);";
         $stmt = $conn->prepare($sql);
+        var_dump($sql);
+        var_dump($requestData["category"]);
         $res = $stmt->execute([
             ":description" => $requestData["description"],
             ":duration" => $requestData["duration"],
