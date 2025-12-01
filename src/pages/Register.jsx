@@ -7,8 +7,8 @@ const Register = () => (
       <div className="register-hero__content">
         <h1 className="register-hero__title">Créer mon compte Aura</h1>
         <p className="register-hero__subtitle">
-          En quelques étapes, créez un espace sécurisé pour réserver ou proposer
-          vos services.
+          En quelques étapes, créez un espace sécurisé pour réserver des
+          services ou proposer vos prestations.
         </p>
       </div>
     </section>
