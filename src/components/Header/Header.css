@@ -134,7 +134,7 @@
 
 @media (min-width: 768px) {
   .aura-header__topbar {
-    height: 4.125rem;
+    height: 3.125rem;
   }
   .aura-header__topbar {
     display: block;
@@ -166,8 +166,8 @@
   }
   .aura-header__topbar-profile-icon {
     color: #FFFFFF;
-    width: 44px;
-    height: 44px;
+    width: 35px;
+    height: 35px;
   }
   .aura-header__bar {
     padding-top: 1.5rem;

@@ -37,7 +37,6 @@ export default function Home() {
         </p>
 
         <div className="aura-services__grid">
-
           <div className="aura-service-card">
             <img src={nailService} alt="Onglerie" />
             <div className="aura-service-card__overlay">
@@ -45,14 +44,12 @@ export default function Home() {
             </div>
           </div>
 
-      
           <div className="aura-service-card">
             <img src={menageService} alt="Massage" />
             <div className="aura-service-card__overlay">
               <button className="aura-service-card__btn">En savoir plus</button>
             </div>
           </div>
-
 
           <div className="aura-service-card">
             <img src={massageService} alt="Femme de ménage" />

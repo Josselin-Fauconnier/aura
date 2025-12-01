@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
-import Services from "./pages/Services";
-import ServiceDetail from "./pages/ServiceDetail";
+// import ServiceDetail from "./pages/ServiceDetail";
 import Login from "./pages/Login";
 import RegisterCustomer from "./pages/RegisterCustomer";
 import RegisterProvider from "./pages/RegisterProvider";
@@ -15,8 +14,6 @@ const App = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/connexion" element={<Login />} />
           <Route path="/inscription/client" element={<RegisterCustomer />} />
           <Route

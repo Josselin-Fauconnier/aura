@@ -89,5 +89,11 @@
       "category": "Ménage",
       "price": 40.0
     }
+  ],
+  "categories_list": [
+    { "key": "Beauté", "name": "Beauté" },
+    { "key": "Garde_denfant", "name": "Garde d'enfant" },
+    { "key": "Massage", "name": "Massage" },
+    { "key": "Ménage", "name": "Ménage" }
   ]
 }
