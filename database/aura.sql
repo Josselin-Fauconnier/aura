@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 26 nov. 2025 à 11:11
+-- Généré le : jeu. 27 nov. 2025 à 15:08
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -61,7 +61,6 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`id_comment`, `id_service`, `notation`, `comment`, `comment_date`) VALUES
-(1, 1, 5, 'Excellent soin du visage ! Sophie est très professionnelle.', '2025-11-25 09:29:50'),
 (2, 1, 4, 'Très bon service, ma peau est douce après le soin.', '2025-11-25 09:29:50'),
 (3, 1, 5, 'Parfait, exactement ce que j\'attendais !', '2025-11-25 09:29:50'),
 (4, 2, 5, 'Ménage impeccable ! Pierre est efficace et respectueux.', '2025-11-25 09:29:50'),
@@ -112,6 +111,17 @@ CREATE TABLE `fav_offers` (
   `id_offer` int UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `fav_offers`
+--
+
+INSERT INTO `fav_offers` (`id_favOffer`, `id_customer`, `id_offer`, `created_at`) VALUES
+(1, 1, 1, '2025-11-27 14:24:52'),
+(2, 1, 4, '2025-11-27 14:24:52'),
+(3, 1, 7, '2025-11-27 14:24:52'),
+(4, 2, 2, '2025-11-27 14:24:52'),
+(5, 2, 6, '2025-11-27 14:24:52');
 
 -- --------------------------------------------------------
 
@@ -243,6 +253,16 @@ CREATE TABLE `tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+-- Déchargement des données de la table `tokens`
+--
+
+INSERT INTO `tokens` (`token`, `id_customer`, `admin`, `created_at`) VALUES
+('token_admin_2025', 1, 1, '2025-11-27 16:08:25'),
+('token_claire_2025', 3, 0, '2025-11-27 16:08:25'),
+('token_jean_2025', 2, 0, '2025-11-27 16:08:25'),
+('token_marie_2025', 1, 0, '2025-11-27 16:08:25');
+
+--
 -- Index pour les tables déchargées
 --
 
@@ -337,7 +357,7 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT pour la table `fav_offers`
 --
 ALTER TABLE `fav_offers`
-  MODIFY `id_favOffer` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_favOffer` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `fav_providers`

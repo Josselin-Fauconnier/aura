@@ -1,5 +1,4 @@
-// src/components/Header.jsx
-
+// src/components/layout/Header.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ServiceDropdown from "../ServiceDropdown/ServiceDropdown";
@@ -7,6 +6,7 @@ import "./Header.scss";
 import logoAura from "../../assets/logo_aura.png";
 import whiteAura from "../../assets/logo_aura_white.png";
 import peopleIcon from "../../assets/icons/people.svg";
+import peopleIconHover from "../../assets/icons/people_h.svg";
 
 const navLinks = [
   { label: "Accueil", href: "/" },
@@ -31,19 +31,35 @@ export default function Header() {
   return (
     <>
       <header className="aura-header">
+        {/* TOPBAR (desktop uniquement) */}
         <div className="aura-header__topbar">
           <div className="aura-header__topbar-inner">
             <div className="aura-header__topbar-left" />
-            <div className="aura-header__topbar-profile">
+
+            {/* Icône profil → lien vers /profil */}
+            <a
+              href="/profil"
+              className="aura-header__topbar-profile"
+              aria-label="Accéder à mon profil"
+            >
+              {/* Icône par défaut */}
               <img
-                className="aura-header__topbar-profile-icon"
+                className="aura-header__topbar-profile-icon aura-header__topbar-profile-icon--default"
                 src={peopleIcon}
-                alt="Profile"
+                alt="Profil"
               />
-            </div>
+              {/* Icône au hover (desktop) */}
+              <img
+                className="aura-header__topbar-profile-icon aura-header__topbar-profile-icon--hover"
+                src={peopleIconHover}
+                alt=""
+                aria-hidden="true"
+              />
+            </a>
           </div>
         </div>
 
+        {/* BAR PRINCIPALE */}
         <div className="aura-header__bar">
           <div className="aura-header__side aura-header__side--left">
             <nav className="aura-header__nav aura-header__nav--left">
@@ -56,14 +72,14 @@ export default function Header() {
           </div>
 
           <div className="aura-header__center">
-            {/* Le logo est un lien vers l'accueil */}
-            <Link to="/" onClick={closeMenu}>
+            {/* Logo cliquable vers l’accueil */}
+            <a href="/" aria-label="Revenir à l’accueil">
               <img
                 src={logoAura}
                 alt="Aura logo"
                 className="aura-header__logo"
               />
-            </Link>
+            </a>
           </div>
 
           <div className="aura-header__side aura-header__side--right">
@@ -88,19 +104,30 @@ export default function Header() {
         </div>
       </header>
 
-      {/* OVERLAY / MENU MOBILE */}
+      {/* OVERLAY MOBILE */}
       <div
         className={`aura-header__overlay ${
           isMenuOpen ? "aura-header__overlay--open" : ""
         }`}
       >
         <div className="aura-header__overlay-header">
-          <div className="aura-header__overlay-user">
-            <span className="aura-header__overlay-user-icon"></span>
-          </div>
+          {/* Icône profil à gauche dans l’overlay */}
+          <a
+            href="/profil"
+            className="aura-header__overlay-user"
+            aria-label="Accéder à mon profil"
+          >
+            <img
+              src={peopleIcon}
+              alt="Profil"
+              className="aura-header__overlay-user-icon"
+            />
+          </a>
+
           <div className="aura-header__overlay-logo">
             <img src={whiteAura} alt="Aura" />
           </div>
+
           <button
             type="button"
             className="aura-header__overlay-close"
