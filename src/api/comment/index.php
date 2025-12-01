@@ -32,13 +32,14 @@ require_once "../tokens.php";
 header("Content-Type: application/json; charset=UTF-8");
 
 
-function getJsonBody() : array {
+function getJsonBody(): array
+{
     $raw = file_get_contents("php://input");
-    if($raw === false || $raw === ""){
+    if ($raw === false || $raw === "") {
         return [];
     }
-    $data = json_decode($raw,true);
-    if(!is_array($data)){
+    $data = json_decode($raw, true);
+    if (!is_array($data)) {
         return [];
     }
     return $data;
@@ -51,7 +52,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case 'POST':
-        $requestData = getJsonBody(); 
+        $requestData = getJsonBody();
 
         if (isset($_SERVER["HTTP_X_API_KEY"])) {
             $requestData["token"] = $_SERVER["HTTP_X_API_KEY"];
@@ -61,7 +62,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case 'DELETE':
-        $requestData = getJsonBody(); 
+        $requestData = getJsonBody();
 
         if (isset($_SERVER["HTTP_X_API_KEY"])) {
             $requestData["token"] = $_SERVER["HTTP_X_API_KEY"];
@@ -76,7 +77,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 }
 
-function comments_get(array $requestData): void {
+function comments_get(array $requestData): void
+{
     $conn = Connection::getConnection();
 
     if (!isset($requestData["id_service"])) {
@@ -102,34 +104,36 @@ function comments_get(array $requestData): void {
 }
 
 
-function comments_post(array $requestData): void {
+function comments_post(array $requestData): void
+{
     $conn = Connection::getConnection();
-    
+
     if (!isset($requestData["token"])) {
         echo json_encode(["message" => "Missing token"]);
         http_response_code(400);
         return;
     }
 
-    
+
     if (isset($requestData["id_comment"])) {
         comments_update($requestData, $conn);
-    } 
-    
-    else {
+    } else {
         comments_add($requestData, $conn);
     }
 }
 
-function comments_add(array $requestData, PDO $conn): void {
-    if (!isset($requestData["id_service"]) || !isset($requestData["notation"]) || 
-        !isset($requestData["comment"])) {
+function comments_add(array $requestData, PDO $conn): void
+{
+    if (
+        !isset($requestData["id_service"]) || !isset($requestData["notation"]) ||
+        !isset($requestData["comment"])
+    ) {
         echo json_encode(["message" => "Missing parameters for comment creation"]);
         http_response_code(400);
         return;
     }
 
-    
+
     $notation = (int)$requestData["notation"];
     if ($notation < 1 || $notation > 5) {
         echo json_encode(["message" => "Invalid notation. Must be between 1 and 5"]);
@@ -137,7 +141,7 @@ function comments_add(array $requestData, PDO $conn): void {
         return;
     }
 
-  
+
     if (empty(trim($requestData["comment"]))) {
         echo json_encode(["message" => "Comment cannot be empty"]);
         http_response_code(400);
@@ -156,8 +160,8 @@ function comments_add(array $requestData, PDO $conn): void {
             return;
         }
 
-        
-        $isOwner = check_token($requestData["token"], $serviceData["id_customer"], false);
+
+        $isOwner = check_token($requestData["token"], $serviceData["id_customer"], "customer");
         if (!$isOwner) {
             echo json_encode(["message" => "Unauthorized - You can only comment on your own services"]);
             http_response_code(403);
@@ -176,11 +180,11 @@ function comments_add(array $requestData, PDO $conn): void {
 
         if ($commentCount["count"] > 0) {
             echo json_encode(["message" => "You have already commented on this service"]);
-            http_response_code(409); 
+            http_response_code(409);
             return;
         }
 
-        
+
         $sql = "INSERT INTO comments (id_service, notation, comment, comment_date) 
                 VALUES (:id_service, :notation, :comment, NOW())";
         $stmt = $conn->prepare($sql);
@@ -190,11 +194,11 @@ function comments_add(array $requestData, PDO $conn): void {
             ":comment" => trim($requestData["comment"])
         ]);
 
-        
-        add_token($requestData["token"], $serviceData["id_customer"], false);
+
+        //add_token($requestData["token"], $serviceData["id_customer"], "customer");
 
         echo json_encode(["message" => "Comment successfully created"]);
-        http_response_code(201); 
+        http_response_code(201);
     } catch (PDOException $e) {
         echo $e->getMessage();
         http_response_code(500);
@@ -202,7 +206,8 @@ function comments_add(array $requestData, PDO $conn): void {
     }
 }
 
-function comments_update(array $requestData, PDO $conn): void {
+function comments_update(array $requestData, PDO $conn): void
+{
     if (!isset($requestData["comment"])) {
         echo json_encode(["message" => "Missing comment parameter"]);
         http_response_code(400);
@@ -234,8 +239,8 @@ function comments_update(array $requestData, PDO $conn): void {
         return;
     }
 
-    $isOwner = check_token($requestData["token"], $commentData["id_customer"], false);
-    $isAdmin = check_token($requestData["token"], -1, true);
+    $isOwner = check_token($requestData["token"], $commentData["id_customer"], "customer");
+    $isAdmin = check_token($requestData["token"], -1, "admin");
 
     if (!$isOwner && !$isAdmin) {
         echo json_encode(["message" => "Unauthorized"]);
@@ -251,9 +256,8 @@ function comments_update(array $requestData, PDO $conn): void {
             ":id_comment" => $requestData["id_comment"]
         ]);
 
-        
-        add_token($requestData["token"], $commentData["id_customer"], false);
 
+        //add_token($requestData["token"], $commentData["id_customer"], false);
     } catch (PDOException $e) {
         echo $e->getMessage();
         http_response_code(500);
@@ -264,7 +268,8 @@ function comments_update(array $requestData, PDO $conn): void {
     http_response_code(200);
 }
 
-function comments_delete(array $requestData): void {
+function comments_delete(array $requestData): void
+{
     $conn = Connection::getConnection();
 
     if (!isset($requestData["id_comment"]) || !isset($requestData["token"])) {
@@ -272,18 +277,18 @@ function comments_delete(array $requestData): void {
         http_response_code(400);
         return;
     }
-    
+
     try {
         $sql = "SELECT s.id_customer FROM comments c
                 JOIN services s ON c.id_service = s.id_service
                 WHERE c.id_comment = :id_comment";
-        $stmt = $conn->prepare($sql);  
+        $stmt = $conn->prepare($sql);
         $stmt->execute([
             ":id_comment" => $requestData["id_comment"]
-        ]);  
-        
+        ]);
+
         $commentData = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if (!$commentData) {
             echo json_encode(["message" => "Comment not found"]);
             http_response_code(404);
@@ -294,16 +299,16 @@ function comments_delete(array $requestData): void {
         http_response_code(500);
         return;
     }
-    
-    $isOwner = check_token($requestData["token"], $commentData["id_customer"], false);
-    $isAdmin = check_token($requestData["token"], -1, true);
-    
+
+    $isOwner = check_token($requestData["token"], $commentData["id_customer"], "customer");
+    $isAdmin = check_token($requestData["token"], -1, "admin");
+
     if (!$isOwner && !$isAdmin) {
         echo json_encode(["message" => "Unauthorized"]);
         http_response_code(403);
         return;
     }
-    
+
     try {
         $sql = "DELETE FROM comments WHERE id_comment = :id_comment";
         $stmt = $conn->prepare($sql);
@@ -311,15 +316,14 @@ function comments_delete(array $requestData): void {
             ":id_comment" => $requestData["id_comment"]
         ]);
 
-         
-        add_token($requestData["token"], $commentData["id_customer"], false);
 
+        //add_token($requestData["token"], $commentData["id_customer"], false);
     } catch (PDOException $e) {
         echo $e->getMessage();
         http_response_code(500);
         return;
     }
-    
+
     echo json_encode(["message" => "Comment successfully deleted"]);
     http_response_code(200);
 }
