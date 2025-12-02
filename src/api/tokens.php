@@ -34,31 +34,23 @@ function check_token(string $token, int $id = -1, string $role = "customer"): bo
 {
     try {
         $conn = Connection::getConnection();
-        
-        $sql = "SELECT id_customer, admin FROM tokens WHERE token = :token";
+
+        $sql = "SELECT id_customer, role FROM tokens WHERE token = :token";
         $stmt = $conn->prepare($sql);
         $stmt->execute([":token" => $token]);
         $tokenData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        
+
         if (!$tokenData) {
             return false;
         }
 
-    $sql = "SELECT id_customer, role
-            FROM tokens
-            WHERE token = :token";
 
-       
         if ($id !== -1) {
             return (int)$tokenData["id_customer"] === $id;
         }
-
-        
-        return true;
-
     } catch (PDOException $e) {
-        
+
         return false;
     }
 
@@ -72,5 +64,3 @@ function check_token(string $token, int $id = -1, string $role = "customer"): bo
             return ($tokenData["role"] === $role && $tokenData["id_customer"] === $id);
     return false;
 }
-
-
