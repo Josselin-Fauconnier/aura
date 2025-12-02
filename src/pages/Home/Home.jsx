@@ -1,9 +1,9 @@
-import "./Home.scss";
+import "./Home.css";
 
-import heroWoman from "../assets/hero-woman.png";
-import nailService from "../assets/Rhapsody-Road-Photography-Sherille-Riley-Beauty-Edit-Launch-Nails-Brows-Mayfair-©-Emma-Lambe-0005-DSC_5730-scaled.jpg";
-import massageService from "../assets/R.jpeg";
-import menageService from "../assets/femme de ménage.png";
+import heroWoman from "../../assets/hero-woman.png";
+import nailService from "../../assets/Rhapsody-Road-Photography-Sherille-Riley-Beauty-Edit-Launch-Nails-Brows-Mayfair-©-Emma-Lambe-0005-DSC_5730-scaled.jpg";
+import massageService from "../../assets/R.jpeg";
+import menageService from "../../assets/femme de ménage.png";
 
 export default function Home() {
   return (

@@ -1,24 +1,49 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthProvider";
 import MainLayout from "./layouts/MainLayout";
-import Home from "./pages/Home";
-// import ServiceDetail from "./pages/ServiceDetail";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Error from "./pages/Error";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import Error from "./pages/Error/Error";
+import CategoryPage from "./pages/CategoryPage/CategoryPage";
+import CategoryOffers from "./pages/CategoryOffers/CategoryOffers";
+import OfferDetail from "./pages/OfferDetail/OfferDetail";
+import DashboardClient from "./pages/DashboardClient/DashboardClient";
+import DashboardProvider from "./pages/DashboardProvider/DashboardProvider";
+import DashboardAdmin from "./pages/DashboardAdmin/DashboardAdmin";
 import "./styles/main.css";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/connexion" element={<Login />} />
-          <Route path="/inscription" element={<Register />} />
-          <Route path="*" element={<Error />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Layout principal */}
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/connexion" element={<Login />} />
+            <Route path="/inscription" element={<Register />} />
+
+            {/* Catégories */}
+            <Route path="/categorie/:id" element={<CategoryPage />} />
+            <Route path="/categorie/:id/offres" element={<CategoryOffers />} />
+
+            {/* Détail d’une offre */}
+            <Route path="/offre/:id" element={<OfferDetail />} />
+
+            {/* Dashboards */}
+            <Route path="/client/dashboard" element={<DashboardClient />} />
+            <Router
+              path="/prestataire/dashboard"
+              element={<DashboardProvider />}
+            />
+            <Route path="/admin/dashboard" element={<DashboardAdmin />} />
+
+            <Route path="*" element={<Error />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 

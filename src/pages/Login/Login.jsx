@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../contexts/useAuth";
-import MockData from "../mocks/data.json";
-import "./Register.scss"; 
+import { useAuth } from "../../contexts/useAuth";
+import MockData from "../../mocks/data.json";
+// import "./Login/Login.css";
 
 const strictEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -11,10 +11,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-
   const [errorMessage, setErrorMessage] = useState(null);
   const [emailError, setEmailError] = useState(null);
-  const [mockRole, setMockRole] = useState("customer"); 
+  const [mockRole, setMockRole] = useState("customer");
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -33,7 +32,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-al
+    alert("Connexion en cours...");
     setErrorMessage(null);
 
     if (emailError) {
@@ -49,7 +48,6 @@ al
 
     const targetEmail = targetAuthData.user.email;
     const testPassword = "1234";
-
 
     setTimeout(() => {
       if (email === targetEmail && password === testPassword) {
@@ -177,7 +175,7 @@ al
               to="/inscription"
               className="register-btn register-btn--primary register-links__btn"
             >
-              M’inscrire 
+              M’inscrire
             </Link>
           </div>
         </div>
