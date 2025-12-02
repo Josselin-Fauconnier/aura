@@ -116,7 +116,7 @@ const RegisterForm = () => {
     setErrors({});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateStep()) return;
 
@@ -129,41 +129,50 @@ const RegisterForm = () => {
             firstname: formData.firstname,
             email: formData.email,
             password: formData.password,
+            password_confirm: formData.confirmPassword, // à ajouter
             phone_number: formData.phoneNumber,
             address: formData.address,
             sex: formData.sex,
-            additional_information: formData.additionalInformation || null,
+            additional_information: formData.additionalInformation || "",
           }
         : {
             name: formData.name,
             firstname: formData.firstname,
             email: formData.email,
             password: formData.password,
+            password_confirm: formData.confirmPassword, // à ajouter
             phone_number: formData.phoneNumber,
             address: formData.address,
             sex: formData.sex,
             SIREN: formData.siren,
             statut: formData.statut,
             education_experience: formData.education,
-            additional_information: formData.additionalInformation || null,
+            additional_information: formData.additionalInformation || "",
           };
 
-    console.log(
-      `${
-        formData.role === "client" ? "Client" : "Prestataire"
-      } registration ready:`,
-      registrationData
-    );
-
-    setTimeout(() => {
-      alert(
-        `${
-          formData.role === "client" ? "Client" : "Prestataire"
-        } inscription validée (simulation). Redirection vers la connexion.`
+    try {
+      const response = await fetch(
+        "http://localhost/aura/src/api/customer/index.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(registrationData),
+        }
       );
+      const data = await response.json();
+      console.log(data);
+
+      if (response.ok) {
+        alert("Inscription réussie !");
+        navigate("/connexion");
+      } else {
+        alert("Erreur : " + data.message);
+      }
+    } catch (error) {
+      alert("Erreur réseau : " + error.message);
+    } finally {
       setLoading(false);
-      navigate("/connexion");
-    }, 1500);
+    }
   };
 
   return (
