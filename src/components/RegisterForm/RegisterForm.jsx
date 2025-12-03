@@ -151,14 +151,11 @@ const RegisterForm = () => {
           };
 
     try {
-      const response = await fetch(
-        "http://localhost/aura/src/api/customer/index.php",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(registrationData),
-        }
-      );
+      const response = await fetch("/api/customer/index.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(registrationData),
+      });
       const data = await response.json();
       console.log(data);
 
