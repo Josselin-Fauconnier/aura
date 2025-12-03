@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 require_once "../connection.php";
 
-
-
 header("Content-Type: application/json; charset=UTF-8");
 
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -35,14 +33,10 @@ function calculate_dispos(array $disponibilities, array $reserved, int $duration
     $new_dispos = [];
     foreach ($reserved as $r) {
         foreach ($disponibilities as $d) {
-            //if ($r > $d["start_date"] && $r < $d["end_date"]) {
             $p1s = DateTime::createFromFormat($format,  $d["start_date"]);
             $p1e = DateTime::createFromFormat($format, $r);
             if ($p1e->getTimestamp() - $p1s->getTimestamp() > $duration * 60) {
-                echo ($p1e->getTimestamp() - $p1s->getTimestamp());
-                echo "\n";
                 $p1 = ["start_date" => $p1s->format($format), "end_date" => $p1e->format($format)];
-                print_r($p1);
                 array_push($new_dispos, $p1);
             }
 
@@ -53,8 +47,6 @@ function calculate_dispos(array $disponibilities, array $reserved, int $duration
                 $p2 = ["start_date" => $p2s->format($format), "end_date" => $p2e->format($format)];
                 array_push($new_dispos, $p2);
             }
-            /*  } else
-                array_push($new_dispos, $d); */
         }
         $disponibilities = $new_dispos;
     }
@@ -79,9 +71,6 @@ function disponibilities_get(array $requestData): void
      */
 
     $now = date("Y-m-d H:i:s");
-    /*  $format = 'Y-m-d H:i:s';
-    $now = DateTime::createFromFormat($format, "now"); */
-    var_dump($now);
 
     try {
         $sql = "SELECT * FROM services WHERE id_offer=:id_offer AND service_date > :now";
@@ -145,7 +134,6 @@ function disponibilities_get(array $requestData): void
 
     $dispos = calculate_dispos($disponibilities, $reserved, $duration);
 
-    //var_dump($res);
     echo json_encode($dispos);
     http_response_code(200);
 }
