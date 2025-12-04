@@ -6,6 +6,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Error from "./pages/Error";
+import Legal from "./pages/Legal-old";
 import "./styles/main.css";
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/connexion" element={<Login />} />
           <Route path="/inscription" element={<Register />} />
+          <Route path="/Legal" element={<Legal />} />
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>
