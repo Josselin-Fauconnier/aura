@@ -1,5 +1,5 @@
-import Cgu from "../components/mentions légales/cgu";
-import Cgv from "../components/mentions légales/cgv";
+import Cgu from "../../components/mentions légales/cgu";
+import Cgv from "../../components/mentions légales/cgv";
 
 
 const Legal = () => {
