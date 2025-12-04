@@ -1,5 +1,5 @@
 import RegisterForm from "../../components/RegisterForm/RegisterForm";
-// import "./Register.scss";
+import "./Register.scss";
 
 const Register = () => (
   <main className="register-page">

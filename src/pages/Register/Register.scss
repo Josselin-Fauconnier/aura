@@ -1,5 +1,4 @@
-// C:\wamp64\www\aura\src\pages\Register.scss
-@use "../styles/_variables" as *;
+@use "../../styles/variables" as *;
 
 /* PAGE */
 
@@ -175,7 +174,6 @@
   transform: translateX(100%);
 }
 
-
 /* CHAMPS */
 
 .register-card__grid {
@@ -274,7 +272,7 @@
 
 .register-btn {
   padding: $spacing-2 $spacing-6;
-  border-radius: $radius-lg; 
+  border-radius: $radius-lg;
   font-family: $font-family-primary;
   font-size: $font-size-base;
   font-weight: 600;

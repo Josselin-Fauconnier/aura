@@ -25,15 +25,18 @@ const App = () => {
             <Route path="/inscription" element={<Register />} />
 
             {/* Catégories */}
-            <Route path="/categorie/:id" element={<CategoryPage />} />
-            <Route path="/categorie/:id/offres" element={<CategoryOffers />} />
+            <Route path="/categorie/:categoryKey" element={<CategoryPage />} />
+            <Route
+              path="/categorie/:categoryKey/offres"
+              element={<CategoryOffers />}
+            />
 
             {/* Détail d’une offre */}
             <Route path="/offre/:id" element={<OfferDetail />} />
 
             {/* Dashboards */}
             <Route path="/client/dashboard" element={<DashboardClient />} />
-            <Router
+            <Route
               path="/prestataire/dashboard"
               element={<DashboardProvider />}
             />

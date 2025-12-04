@@ -1,4 +1,4 @@
-@use "../styles/_variables" as *;
+@use "../../styles/variables" as *;
 
 .error-page {
   min-height: 75vh;
@@ -62,5 +62,4 @@
   .error-title {
     font-size: 14rem;
   }
-
 }

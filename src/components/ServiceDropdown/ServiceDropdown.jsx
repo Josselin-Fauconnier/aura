@@ -1,29 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import MockData from "../../mocks/data.json";
+import "./ServiceDropdown.scss";
 
 const ServiceDropdown = ({ className }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  // Les catégories viennent DIRECtEMENT du JSON
+  const [open, setOpen] = useState(false);
   const categories = MockData.categories_list;
 
   return (
     <div
-      className={`services-dropdown-container ${className}`}
-      onMouseEnter={() => setIsDropdownOpen(true)}
-      onMouseLeave={() => setIsDropdownOpen(false)}
+      className={`aura-header__nav-dropdown ${className}`}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
     >
       <div className="dropdown-trigger">Services ▼</div>
 
-      {isDropdownOpen && (
+      {open && (
         <div className="dropdown-content">
           {categories.map((cat) => (
             <Link
               key={cat.key}
-              to={`/services/${cat.key}`}
+              to={`/categorie/${cat.key}`}
               className="dropdown-link"
-              onClick={() => setIsDropdownOpen(false)}
+              onClick={() => setOpen(false)}
             >
               {cat.name}
             </Link>
