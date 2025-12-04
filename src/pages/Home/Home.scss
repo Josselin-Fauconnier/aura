@@ -1,4 +1,4 @@
-@use "../styles/_variables" as *;
+@use "../../styles/variables" as *;
 
 .aura-home {
   background-color: $color-bg;
@@ -81,7 +81,7 @@
       rgba($color-secondary, 0.85),
       rgba($color-secondary, 0.85)
     ),
-    url("../assets/pourquoi-et-comment-obtenir-une-aide-a-domicile-10.jpg");
+    url("../../assets/pourquoi-et-comment-obtenir-une-aide-a-domicile-10.jpg");
   background-size: cover;
   background-position: center;
   text-align: center;
@@ -302,7 +302,7 @@
       rgba($color-secondary, 0.75),
       rgba($color-secondary, 0.75)
     ),
-    url("../assets/pourquoi-et-comment-obtenir-une-aide-a-domicile-9.jpg");
+    url("../../assets/pourquoi-et-comment-obtenir-une-aide-a-domicile-9.jpg");
   background-size: cover;
   background-position: center;
   text-align: center;

@@ -11,6 +11,7 @@ import OfferDetail from "./pages/OfferDetail/OfferDetail";
 import DashboardClient from "./pages/DashboardClient/DashboardClient";
 import DashboardProvider from "./pages/DashboardProvider/DashboardProvider";
 import DashboardAdmin from "./pages/DashboardAdmin/DashboardAdmin";
+import ServiceCatalog from "./pages/ServiceCatalog/ServiceCatalog";
 import "./styles/main.css";
 
 const App = () => {
@@ -22,7 +23,7 @@ const App = () => {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/connexion" element={<Login />} />
-            <Route path="/inscription" element={<Register />} />
+            <Route path="/offre" element={<ServiceCatalog />} />
 
             {/* Catégories */}
             <Route path="/categorie/:categoryKey" element={<CategoryPage />} />
@@ -31,8 +32,11 @@ const App = () => {
               element={<CategoryOffers />}
             />
 
+            {/* Formulaire d'inscription */}
+            <Route path="/inscription" element={<Register />} />
+
             {/* Détail d’une offre */}
-            <Route path="/offre/:id" element={<OfferDetail />} />
+            <Route path="/offred/:id" element={<OfferDetail />} />
 
             {/* Dashboards */}
             <Route path="/client/dashboard" element={<DashboardClient />} />

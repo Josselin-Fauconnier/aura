@@ -1,4 +1,4 @@
-import "./Home.css";
+import "./Home.scss";
 
 import heroWoman from "../../assets/hero-woman.png";
 import nailService from "../../assets/Rhapsody-Road-Photography-Sherille-Riley-Beauty-Edit-Launch-Nails-Brows-Mayfair-©-Emma-Lambe-0005-DSC_5730-scaled.jpg";

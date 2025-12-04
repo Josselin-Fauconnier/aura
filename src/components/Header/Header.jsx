@@ -12,7 +12,7 @@ const navLinks = [
   { label: "Accueil", href: "/" },
   { label: "Services", href: "/services" }, // NOTE: Ce lien ne sera plus utilisé directement
   { label: "Connexion", href: "/connexion" },
-  { label: "Inscription", href: "/inscription" },
+  { label: "Nos offres", href: "/offre" },
 ];
 
 export default function Header() {
