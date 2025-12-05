@@ -52,11 +52,11 @@ const Login = () => {
     setTimeout(() => {
       if (email === targetEmail && password === testPassword) {
         login(targetAuthData);
-
+        // a lier avec la logique de routing des dashboards
         if (mockRole === "provider") {
-          navigate("/prestataire/dashboard");
+          navigate("/");
         } else {
-          navigate("/profil");
+          navigate("/");
         }
       } else {
         setErrorMessage(
