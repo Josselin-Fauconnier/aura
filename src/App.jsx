@@ -8,9 +8,7 @@ import Error from "./pages/Error/Error";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import CategoryOffers from "./pages/CategoryOffers/CategoryOffers";
 import OfferDetail from "./pages/OfferDetail/OfferDetail";
-import DashboardClient from "./pages/DashboardClient/DashboardClient";
-import DashboardProvider from "./pages/DashboardProvider/DashboardProvider";
-import DashboardAdmin from "./pages/DashboardAdmin/DashboardAdmin";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import ServiceCatalog from "./pages/ServiceCatalog/ServiceCatalog";
 import "./styles/main.css";
 
@@ -38,13 +36,7 @@ const App = () => {
             {/* Détail d’une offre */}
             <Route path="/offred/:id" element={<OfferDetail />} />
 
-            {/* Dashboards */}
-            <Route path="/client/dashboard" element={<DashboardClient />} />
-            <Route
-              path="/prestataire/dashboard"
-              element={<DashboardProvider />}
-            />
-            <Route path="/admin/dashboard" element={<DashboardAdmin />} />
+            <Route path="/dashboard/:role/:page?" element={<Dashboard />} />
 
             <Route path="*" element={<Error />} />
           </Route>
