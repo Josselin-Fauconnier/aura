@@ -3,6 +3,7 @@ import { AuthProvider } from "./contexts/AuthProvider";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
+import Contact from "./pages/Contact/Contact";
 import Register from "./pages/Register/Register";
 import Error from "./pages/Error/Error";
 import Legal from "./pages/Legal/Legal";
@@ -48,6 +49,7 @@ const App = () => {
             />
             <Route path="/admin/dashboard" element={<DashboardAdmin />} />
             <Route path="/Legal" element={<Legal />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<Error />} />
           </Route>
         </Routes>
