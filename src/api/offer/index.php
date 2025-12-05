@@ -100,6 +100,8 @@ function offer_get(array $requestData): void
     }
 
     $res["disponibility"] = disponibilities_return(intval($requestData["id_offer"]));
+
+
     echo json_encode($res);
     http_response_code(200);
 }
@@ -360,50 +362,38 @@ function disponibilities_return(int $id_offer = -1): array
 
 function calculate_dispos(array $disponibilities, array $reserved, int $duration): array
 {
-    //var_dump($reserved);
     $format = 'Y-m-d H:i:s';
     $new_dispos = [];
+    if (count($reserved) < 1)
+        return $disponibilities;
     foreach ($reserved as $r) {
         foreach ($disponibilities as $d) {
             if ($r < $d["start_date"] || $r > $d["end_date"]) {
-                //echo "Check " . $r . " avec " . $d["start_date"] . " " . $d["end_date"] . "\n";
+                array_push($new_dispos, $d);
                 continue;
             }
-            //echo "Split " . $r . " avec " . $d["start_date"] . " " . $d["end_date"] . "\n";
             $p1s = DateTime::createFromFormat($format,  $d["start_date"]);
             $p1e = DateTime::createFromFormat($format, $r);
-            //echo "-- " . $p1e->getTimestamp() - $p1s->getTimestamp();
             if ($p1e->getTimestamp() - $p1s->getTimestamp() > $duration * 60) {
                 $p1 = ["start_date" => $p1s->format($format), "end_date" => $p1e->format($format)];
-                /* echo ("ajout new dispo p1" . $p1["start_date"] . "--" . $p1["end_date"]);
-                echo "\n"; */
                 array_push($new_dispos, $p1);
             }
-
             $p2s = DateTime::createFromFormat($format,  $r);
             $p2e = DateTime::createFromFormat($format, $d["end_date"]);
             $p2s->add(new DateInterval('PT' . $duration . 'M'));
-            //echo "-- " . $p2e->getTimestamp() - $p2s->getTimestamp()  . "  === " . $duration * 60;
             if ($p2e->getTimestamp() - $p2s->getTimestamp() > $duration * 60) {
                 $p2 = ["start_date" => $p2s->format($format), "end_date" => $p2e->format($format)];
-                /* echo ("ajout new dispo p2" . $p2["start_date"] . "--" . $p2["end_date"]);
-                echo "\n"; */
                 array_push($new_dispos, $p2);
             }
-            //print_r($new_dispos);
         }
         $disponibilities = $new_dispos;
     }
-
     $new_dispos = merge_disponibilities($new_dispos);
-
     return $new_dispos;
 }
 
 function merge_disponibilities(array $disponibilities): array
 {
-
-    /*   var_dump($disponibilities); */
     $new_dispos = array();
     $plages = array();
 
@@ -413,7 +403,6 @@ function merge_disponibilities(array $disponibilities): array
      * Pas 2: Elimination de tous les elements de la liste compris dans cette plage
      */
     while (count($disponibilities) > 0) {
-        //echo "Start DISPO: " . (count($disponibilities));
         $new_dispos = [];
         $plage = $disponibilities[0];
         array_shift($disponibilities);
@@ -438,28 +427,18 @@ function merge_disponibilities(array $disponibilities): array
             }
         }
         array_push($plages, $plage);
-
-        //print_r($plage);
-
         foreach ($disponibilities as $dispo) {
             $merged = false;
             foreach ($plages as $plage) {
                 if ($dispo["start_date"] >= $plage["start_date"] && $dispo["end_date"] <= $plage["end_date"]) {
                     $merged = true;
-                    //echo "merged plage: " . $plage["start_date"] . " " . $plage["end_date"] . "\n" . $dispo["start_date"] . "  " . $dispo["end_date"] . "\n";
                     break;
-                } /* else
-                    echo ""; */
-                //echo "plage: " . $plage["start_date"] . " " . $plage["end_date"] . "\n" . $dispo["start_date"] . "  " . $dispo["end_date"] . "\n";
+                }
             }
             if (!$merged)
                 array_push($new_dispos, $dispo);
         }
-        //echo (count($new_dispos));
         $disponibilities = $new_dispos;
-        //echo (count($disponibilities));
-        //$disponibilities = [];
     }
-
     return $plages;
 }
