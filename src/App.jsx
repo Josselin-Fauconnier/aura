@@ -38,13 +38,6 @@ const App = () => {
             {/* Détail d’une offre */}
             <Route path="/offred/:id" element={<OfferDetail />} />
 
-            {/* Dashboards */}
-            <Route path="/client/dashboard" element={<DashboardClient />} />
-            <Route
-              path="/prestataire/dashboard"
-              element={<DashboardProvider />}
-            />
-            <Route path="/admin/dashboard" element={<DashboardAdmin />} />
             <Route path="/Legal" element={<Legal />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/dashboard/:role/:page?" element={<Dashboard />} />
