@@ -21,12 +21,14 @@ export default function Cgu() {
                                   
           SIRET : 123 456 789 00012
           <br />
-          Directeur de la publication : Claude Martin
+          Directeur de la publication : Claude Padia
         </p>
         <p>
           Email :{" "}
-          <a href="mailto:Claude.Martin@auradev.fr">
-            Claude.Martin@auradev.fr
+          <a href="mailto:Claude.admin@auradev.fr
+">
+            Claude.admin@auradev.fr
+
           </a>
           <br />
           Téléphone : 01 47 25 30 16
@@ -108,8 +110,10 @@ export default function Cgu() {
 
         <p>
           Contact :{" "}
-          <a href="mailto:Claude.Martin@auradev.fr">
-            Claude.Martin@auradev.fr
+          <a href="mailto:Claude.admin@auradev.fr
+">
+            Claude.admin@auradev.fr
+
           </a>
         </p>
       </section>
@@ -165,8 +169,10 @@ export default function Cgu() {
         <h2>12. Contact</h2>
         <p>
           Email :{" "}
-          <a href="mailto:Claude.Martin@auradev.fr">
-            Claude.Martin@auradev.fr
+          <a href="mailto:Claude.admin@auradev.fr
+">
+            Claude.admin@auradev.fr
+
           </a>
           <br />
           Téléphone : 01 47 25 30 16

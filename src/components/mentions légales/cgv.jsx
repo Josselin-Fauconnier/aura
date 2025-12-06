@@ -19,9 +19,10 @@ export default function Cgv() {
           N° TVA : FR12 123456789
         </p>
         <p>
-          Email : <a href="mailto:Claude.Martin@auradev.fr">Claude.Martin@auradev.fr</a><br />
+          Email : <a href="mailto:Claude.admin@auradev.fr">Claude.admin@auradev.fr
+</a><br />
           Téléphone : 01 47 25 30 16<br />
-          Site web : www.aura-services.fr
+          Site web : <a href="Home.jsx">www.aura-services.fr</a> 
         </p>
         <p>
           Assurance RC Pro : Allianz France – Police n°123456789, couverture 2 000 000 €.
