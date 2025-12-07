@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Contact.scss';
+/* import './Contact.scss'; */
 
 const Contact = () => {
   // États pour gérer le formulaire

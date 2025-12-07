@@ -30,7 +30,19 @@ require_once "../connection.php";
 require_once "../tokens.php";
 require_once "../offer_validation.php";
 
+require __DIR__ . '/../../../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '\..\..\..');
+$dotenv->load();
+
+
 header("Content-Type: application/json; charset=UTF-8");
+
+if (isset($_ENV["MAPS_API_KEY"]))
+    $API_KEY = $_ENV["MAPS_API_KEY"];
+else
+    $API_KEY = "FAIL";
+// https://geocode.maps.co/search?q=555+5th+Ave+New+York+NY+10017+US&api_key=YOUR_SECRET_API_KEY
 
 function getJsonBody(): array
 {
@@ -72,8 +84,28 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
 function offer_get(array $requestData): void
 {
+    global $API_KEY;
 
     $conn = Connection::getConnection();
+
+    /// TEST
+    $url = "https://geocode.maps.co/search?q=Chaville&api_key=" . $API_KEY;
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Content-Type: application/json"
+    ]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+
+    if (curl_error($ch)) {
+        echo curl_error($ch);
+    }
+
+    echo $response;
+
+    //$data =  https://geocode.maps.co/search?q=555+5th+Ave+New+York+NY+10017+US&api_key=YOUR_SECRET_API_KEY
 
     if (!isset($requestData["id_offer"])) {
         echo json_encode(["message" => "id_offer is missing"]);
