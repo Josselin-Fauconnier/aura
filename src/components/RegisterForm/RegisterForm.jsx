@@ -22,7 +22,7 @@ const RegisterForm = () => {
     sex: "Autre",
     additionalInformation: "",
     siren: "",
-    status: "Micro-entreprise",
+    statut: "Micro-entreprise",
     education: "",
   });
 
@@ -74,7 +74,7 @@ const RegisterForm = () => {
         else if (!/^\d{9}$/.test(data.siren.trim()))
           newErrors.siren = "Le numéro SIREN doit contenir 9 chiffres.";
 
-        if (!data.status) newErrors.status = "Le statut est obligatoire.";
+        if (!data.statut) newErrors.statut = "Le statut est obligatoire.";
         if (!data.education.trim())
           newErrors.education =
             "Merci de préciser votre expérience / formation.";
@@ -125,47 +125,38 @@ const RegisterForm = () => {
     const registrationData =
       formData.role === "client"
         ? {
-          name: formData.name,
-          firstname: formData.firstname,
-          email: formData.email,
-          password: formData.password,
-          password_confirm: formData.confirmPassword, 
-          phone_number: formData.phoneNumber,
-          address: formData.address,
-          sex: formData.sex,
-          additional_information: formData.additionalInformation || "",
-        }
+            name: formData.name,
+            firstname: formData.firstname,
+            email: formData.email,
+            password: formData.password,
+            password_confirm: formData.confirmPassword, // à ajouter
+            phone_number: formData.phoneNumber,
+            address: formData.address,
+            sex: formData.sex,
+            additional_information: formData.additionalInformation || "",
+          }
         : {
-          name: formData.name,
-          firstname: formData.firstname,
-          email: formData.email,
-          password: formData.password,
-          password_confirm: formData.confirmPassword, 
-          phone_number: formData.phoneNumber,
-          address: formData.address,
-          sex: formData.sex,
-          SIREN: formData.siren,
-          status: formData.status,
-          education_experience: formData.education,
-          profile_picture: "default.WebP",
-          additional_information: formData.additionalInformation || "",
-        };
+            name: formData.name,
+            firstname: formData.firstname,
+            email: formData.email,
+            password: formData.password,
+            password_confirm: formData.confirmPassword, // à ajouter
+            phone_number: formData.phoneNumber,
+            address: formData.address,
+            sex: formData.sex,
+            SIREN: formData.siren,
+            statut: formData.statut,
+            education_experience: formData.education,
+            additional_information: formData.additionalInformation || "",
+          };
 
     try {
-      const endpoint = formData.role === "client"
-        ? "/api/customer/index.php"
-        : "/api/provider/index.php";
-
-      const formBody = new URLSearchParams();
-      Object.keys(registrationData).forEach(key => {
-        formBody.append(key, registrationData[key]);
-      });
-
-      const response = await fetch(endpoint, {
+      const response = await fetch("/api/customer/index.php", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formBody.toString(),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(registrationData), 
       });
+      console.log(registrationData);
       const data = await response.json();
       console.log(data);
 
@@ -194,8 +185,8 @@ const RegisterForm = () => {
               (step === i
                 ? "register-step--active"
                 : step > i
-                  ? "register-step--done"
-                  : "")
+                ? "register-step--done"
+                : "")
             }
           >
             <span className="register-step__index">{i}</span>
@@ -372,8 +363,8 @@ const RegisterForm = () => {
                   <label className="register-field">
                     <span className="register-field__label">Statut</span>
                     <select
-                      name="status"
-                      value={formData.status}
+                      name="statut"
+                      value={formData.statut}
                       onChange={handleChange}
                       disabled={loading}
                     >
@@ -454,8 +445,8 @@ const RegisterForm = () => {
             {loading
               ? "Inscription en cours..."
               : step < 3
-                ? "Étape suivante"
-                : "Finaliser mon inscription"}
+              ? "Étape suivante"
+              : "Finaliser mon inscription"}
           </button>
         </div>
       </form>

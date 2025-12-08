@@ -54,7 +54,7 @@ function validate_statut(string $statut): string
 {
     if (in_array($statut, ["EI", "Micro-entreprise", "EURL", "SASU", "SARL", "SAS"]))
         return "";
-    return "Statut not valid; EI, Micro-entreprise, EURL ,SASU ,SARL ,SAS are the allowed options";
+    return "Status not valid; EI, Micro-entreprise, EURL ,SASU ,SARL ,SAS are the allowed options";
 }
 
 function validate_password(string $password, string $password_confirm): string
