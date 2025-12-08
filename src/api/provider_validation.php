@@ -111,9 +111,9 @@ function validate_input_register(array $requestData): array
         array_push($errors, "SIREN is not set.");
     elseif (($err = validate_siren($requestData["SIREN"])) != "")
         array_push($errors, $err);
-    if (!isset($requestData["statut"]))
-        array_push($errors, "Statut is not set");
-    elseif (($err = validate_statut($requestData["statut"])) != "")
+    if (!isset($requestData["status"]))
+        array_push($errors, "Status is not set");
+    elseif (($err = validate_statut($requestData["status"])) != "")
         array_push($errors, $err);
     $requestData["errors"] = $errors;
     return $requestData;
@@ -156,8 +156,8 @@ function validate_input_update(array $requestData): array
     if (isset($requestData["SIREN"]))
         if (($err = validate_siren($requestData["SIREN"])) != "")
             array_push($errors, $err);
-    if (isset($requestData["statut"]))
-        if (($err = validate_statut($requestData["statut"])) != "")
+    if (isset($requestData["status"]))
+        if (($err = validate_statut($requestData["status"])) != "")
             array_push($errors, $err);
     $requestData["errors"] = $errors;
     return $requestData;

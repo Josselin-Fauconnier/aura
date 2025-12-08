@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 require_once "../connection.php";
 require_once "../offer_validation.php";
-require_once "../disponibilities.php";
+
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
@@ -22,8 +22,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         offers_get($requestData);
         break;
     default:
-        echo json_encode(["message" => "Invalid request"]);
         http_response_code(400);
+        echo json_encode(["message" => "Invalid request"]);
         break;
 }
 
@@ -75,18 +75,54 @@ function offers_get($requestData)
     } catch (PDOException $e) {
         echo json_encode(["message" => $e->getMessage()]);
         http_response_code(500);
-    }
-
-    if ($res === false) {
-        echo json_encode(["message" => "No offers found"]);
-        http_response_code(500);
         return;
     }
 
-    // TODO ADD DISPONIBILITIES TO EACH OFFER
+    if ($res === false) {
+        http_response_code(500);
+        echo json_encode(["message" => "No offers found"]);
+        return;
+    }
 
-    echo json_encode($res);
+    foreach ($res as &$r) {;
+        $r["disponibility"] = disponibilities_return($r["id_offer"]);
+    }
+
+    $res = clear_no_disponibilities($res);
+    // On elimine les offres qui n'ont pas la disponibilité demandé ou pas de disponibilité
+    if (isset($requestData["disponibility"])) {
+        $res = check_has_disponibility($res, $requestData["disponibility"]);
+    }
+
     http_response_code(200);
+    echo json_encode($res);
+}
+
+function clear_no_disponibilities(array $res): array
+{
+    $new_res = [];
+    foreach ($res as $r) {
+        if (count($r["disponibility"]) > 0)
+            array_push($new_res, $r);
+    }
+    return $new_res;
+}
+
+function check_has_disponibility(array $res, string $disponibility): array
+{
+    $new_res = [];
+    foreach ($res as $r) {
+        $has_dispo = false;
+        foreach ($r["disponibility"] as $dispo) {
+            if ($dispo["start_date"] < $disponibility && $dispo["end_date"] > $disponibility) {
+                $has_dispo = true;
+                break;
+            }
+        }
+        if ($has_dispo)
+            array_push($new_res, $r);
+    }
+    return $new_res;
 }
 
 function disponibilities_return(int $id_offer = -1): array
@@ -122,6 +158,8 @@ function disponibilities_return(int $id_offer = -1): array
             array_push($reserved, $service["service_date"]);
     }
 
+
+
     try {
         $sql = "SELECT duration FROM offers WHERE id_offer=:id_offer";
         $stmt = $conn->prepare($sql);
@@ -156,8 +194,13 @@ function disponibilities_return(int $id_offer = -1): array
         array_push($disponibilities, ["start_date" => $dispo["start_date"], "end_date" => $dispo["end_date"]]);
     }
 
+    /* if ($id_offer == 2)
+        var_dump($disponibilities); */
+
     $dispos = calculate_dispos($disponibilities, $reserved, $duration);
 
+    /* if ($id_offer == 2)
+        var_dump($dispos); */
     return $dispos;
 }
 
@@ -165,9 +208,12 @@ function calculate_dispos(array $disponibilities, array $reserved, int $duration
 {
     $format = 'Y-m-d H:i:s';
     $new_dispos = [];
+    if (count($reserved) < 1)
+        return $disponibilities;
     foreach ($reserved as $r) {
         foreach ($disponibilities as $d) {
             if ($r < $d["start_date"] || $r > $d["end_date"]) {
+                array_push($new_dispos, $d);
                 continue;
             }
             $p1s = DateTime::createFromFormat($format,  $d["start_date"]);
