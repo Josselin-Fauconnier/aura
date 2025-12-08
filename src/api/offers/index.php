@@ -15,6 +15,15 @@ declare(strict_types=1);
 require_once "../connection.php";
 require_once "../offer_validation.php";
 
+require __DIR__ . '/../../../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '\..\..\..');
+$dotenv->load();
+
+if (isset($_ENV["MAPS_API_KEY"]))
+    $API_KEY = $_ENV["MAPS_API_KEY"];
+else
+    $API_KEY = "FAIL";
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
@@ -90,7 +99,7 @@ function offers_get($requestData)
                 $sql = "SELECT address FROM service_providers WHERE id_provider=:id";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute([
-                    ":id" => $r * ["id_provider"]
+                    ":id" => $r["id_provider"]
                 ]);
                 $resp = $stmt->fetch(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
@@ -124,9 +133,10 @@ function offers_get($requestData)
 
             $coords_provider = get_coordinates($resp["address"]);
             $coords_customer = get_coordinates($resc["address"]);
-            $r["distance"] = calculate_distance(floatval($coords_provider["lat"]), floatval($coords_provider["lon"]), floatval($coords_customer["lat"]), floatval($coords_customer["lon"]));
-            $r["customer_coords"] = $coords_customer;
-            $r["provider_coords"] = $coords_provider;
+            if (isset($coords_provider["lat"]) && isset($coords_customer["lat"]))
+                $r["distance"] = calculate_distance(floatval($coords_provider["lat"]), floatval($coords_provider["lon"]), floatval($coords_customer["lat"]), floatval($coords_customer["lon"]));
+            //$r["customer_coords"] = $coords_customer;
+            //$r["provider_coords"] = $coords_provider;
         }
         $r["disponibility"] = disponibilities_return($r["id_offer"]);
     }

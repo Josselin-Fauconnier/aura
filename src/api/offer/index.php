@@ -153,8 +153,8 @@ function offer_get(array $requestData): void
         $coords_provider = get_coordinates($resp["address"]);
         $coords_customer = get_coordinates($resc["address"]);
         $res["distance"] = calculate_distance(floatval($coords_provider["lat"]), floatval($coords_provider["lon"]), floatval($coords_customer["lat"]), floatval($coords_customer["lon"]));
-        $res["customer_coords"] = $coords_customer;
-        $res["provider_coords"] = $coords_provider;
+        /* $res["customer_coords"] = $coords_customer;
+        $res["provider_coords"] = $coords_provider; */
     }
 
 
