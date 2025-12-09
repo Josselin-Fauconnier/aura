@@ -212,7 +212,8 @@
   border-color: #ffb798;
   background: rgba(239, 68, 68, 0.05);
 }
-.contact-form .form-group input::-moz-placeholder, .contact-form .form-group textarea::-moz-placeholder {
+.contact-form .form-group input::-moz-placeholder,
+.contact-form .form-group textarea::-moz-placeholder {
   color: #ffb798;
 }
 .contact-form .form-group input::placeholder,

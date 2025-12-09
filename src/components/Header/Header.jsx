@@ -14,12 +14,16 @@ const navLinks = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const closeMenu = () => setIsMenuOpen(false);
 
-  const profileLink = isLoggedIn ? "/" : "/connexion";
+  const profileLink = !isLoggedIn
+    ? "/connexion"
+    : user?.role === "provider"
+    ? "/dashboard/provider"
+    : "/dashboard/customer";
 
   return (
     <>
