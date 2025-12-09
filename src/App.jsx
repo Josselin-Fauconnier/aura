@@ -40,10 +40,9 @@ const App = () => {
 
             <Route path="/Legal" element={<Legal />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/dashboard/:role/:page?" element={<Dashboard />} />
-
             <Route path="*" element={<Error />} />
           </Route>
+          <Route path="/dashboard/:role" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
