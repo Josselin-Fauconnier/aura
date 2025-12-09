@@ -1,148 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+
 import './Contact.css';
 
 const Contact = () => {
-  // ==========================================
-  // SCHEMAS JSON-LD POUR LE SEO
-  // ==========================================
-  useEffect(() => {
-    // Schema 1: Organization avec ContactPoint
-    const schemaOrg = {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Aura Services",
-      "url": "https://votresite.com",
-      "logo": "https://votresite.com/logo.jpg",
-      "description": "Services à domicile : massage, beauté, garde d'enfant et ménage à Paris",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "123 Avenue de la Beauté",
-        "addressLocality": "Paris",
-        "postalCode": "75008",
-        "addressCountry": "FR"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 48.8738,
-        "longitude": 2.2950
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+33-1-47-25-30-16",
-        "contactType": "Service Client",
-        "email": "Claude.Martin@auradev.fr",
-        "areaServed": "FR",
-        "availableLanguage": ["French"],
-        "hoursAvailable": {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          "opens": "09:00",
-          "closes": "18:00"
-        }
-      },
-      "sameAs": [
-        "https://www.facebook.com/auraservices",
-        "https://www.instagram.com/auraservices"
-      ]
-    };
-
-    // Schema 2: LocalBusiness
-    const schemaLocal = {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Aura Services",
-      "image": "https://votresite.com/images/aura-services.jpg",
-      "telephone": "+33-1-47-25-30-16",
-      "email": "Claude.Martin@auradev.fr",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "123 Avenue de la Beauté",
-        "addressLocality": "Paris",
-        "postalCode": "75008",
-        "addressCountry": "FR"
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "09:00",
-        "closes": "18:00"
-      },
-      "priceRange": "$$"
-    };
-
-    // Schema 3: FAQPage
-    const schemaFAQ = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Quels services proposez-vous ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Nous proposons des services de massage à domicile, soins de beauté, garde d'enfants qualifiée et ménage professionnel sur Paris et région parisienne."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Comment réserver une prestation ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Vous pouvez nous contacter par téléphone au +33 1 47 25 30 16, par email à Claude.Martin@auradev.fr ou via notre formulaire de contact. Nous vous répondrons sous 24h."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Quelles sont vos zones d'intervention ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Nous intervenons principalement sur Paris (75) et la proche banlieue. Contactez-nous pour vérifier la disponibilité dans votre secteur."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Quels sont vos tarifs ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Nos tarifs varient selon le type de prestation et la durée. Contactez-nous pour un devis gratuit et personnalisé."
-          }
-        }
-      ]
-    };
-
-    // Injection des schemas dans le DOM
-    const script1 = document.createElement('script');
-    script1.type = 'application/ld+json';
-    script1.id = 'schema-org';
-    script1.text = JSON.stringify(schemaOrg);
-    document.head.appendChild(script1);
-
-    const script2 = document.createElement('script');
-    script2.type = 'application/ld+json';
-    script2.id = 'schema-local';
-    script2.text = JSON.stringify(schemaLocal);
-    document.head.appendChild(script2);
-
-    const script3 = document.createElement('script');
-    script3.type = 'application/ld+json';
-    script3.id = 'schema-faq';
-    script3.text = JSON.stringify(schemaFAQ);
-    document.head.appendChild(script3);
-
-    // Nettoyage à la destruction du composant
-    return () => {
-      const s1 = document.getElementById('schema-org');
-      const s2 = document.getElementById('schema-local');
-      const s3 = document.getElementById('schema-faq');
-      if (s1) document.head.removeChild(s1);
-      if (s2) document.head.removeChild(s2);
-      if (s3) document.head.removeChild(s3);
-    };
-  }, []);
-
-  // ==========================================
-  // ÉTATS DU FORMULAIRE
-  // ==========================================
+  // États pour gérer le formulaire
   const [formData, setFormData] = useState({
     nom: '',
     prenom: '',
@@ -251,75 +112,57 @@ const Contact = () => {
 
   return (
     <>
+
       <main className="aura-contact">
-        {/* Section Hero - H1 optimisé SEO */}
+        {/* Section Hero */}
         <section className="contact-hero">
           <div className="contact-hero__overlay"></div>
           <div className="contact-hero__content">
             <h1 className="contact-hero__title">
-              Contactez Aura Services - Massage, Beauté, Garde d'Enfant et Ménage à Domicile Paris
+              <span>Contactez-Nous</span>
+              <span className="contact-hero__title-gradient">
+                Nous Sommes À Votre Écoute
+              </span>
             </h1>
             <p className="contact-hero__subtitle">
               Une question ? Un besoin ? Notre équipe est là pour vous accompagner
               et vous aider à réserver la prestation qui vous convient : massage,
-              beauté, garde d'enfant ou ménage à domicile.
+              beauté, garde d’enfant ou ménage à domicile.
             </p>
           </div>
         </section>
 
-        {/* Section Informations - Avec liens cliquables */}
+        {/* Section Informations */}
         <section className="contact-info">
           <div className="contact-info__container">
             <div className="contact-info__grid">
-              
-              {/* Carte Adresse */}
               <div className="info-card">
                 <div className="info-card__icon">📍</div>
-                <h2 className="info-card__title">Notre Adresse</h2>
-                <p className="info-card__text">
+                <h3 className="info-card__title">Notre Adresse</h3>
+                <p className="info-card__text" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
                   123 Avenue de la Beauté<br />
                   75008 Paris, France
                 </p>
               </div>
 
-              {/* Carte Téléphone - LIEN CLIQUABLE */}
               <div className="info-card">
                 <div className="info-card__icon">📞</div>
-                <h2 className="info-card__title">Téléphone</h2>
-                <p className="info-card__text">
-                  <a 
-                    href="tel:+33147253016" 
-                    style={{
-                      color: '#ffb798', 
-                      textDecoration: 'none',
-                      fontWeight: '600'
-                    }}
-                  >
-                    +33 1 47 25 30 16
-                  </a><br />
-                  Lundi - Vendredi : 9h - 18h
+                <h3 className="info-card__title">Téléphone</h3>
+                <p className="info-card__text" itemprop="telephone">
+                  +33 1 47 25 30 16<br />
+                 lundi - vendredi : 9h - 18h
                 </p>
+               
               </div>
 
-              {/* Carte Email - LIEN CLIQUABLE */}
               <div className="info-card">
                 <div className="info-card__icon">✉️</div>
-                <h2 className="info-card__title">Email</h2>
+                <h3 className="info-card__title">Email</h3>
                 <p className="info-card__text">
-                  <a 
-                    href="mailto:Claude.Martin@auradev.fr"
-                    style={{
-                      color: '#ffb798', 
-                      textDecoration: 'none',
-                      fontWeight: '600'
-                    }}
-                  >
-                    Claude.Martin@auradev.fr
-                  </a><br />
+                  <span  itemprop="email">Claude.Martin@auradev.fr</span><br />
                   Réponse sous 24h
                 </p>
               </div>
-              
             </div>
           </div>
         </section>
@@ -443,47 +286,6 @@ const Contact = () => {
             </form>
           </div>
         </section>
-
-        {/* NOUVELLE SECTION : FAQ pour le SEO */}
-        <section className="faq-section">
-          <div className="faq-container">
-            <h2 className="faq-title">Questions Fréquentes</h2>
-            
-            <div className="faq-item">
-              <h3 className="faq-question">Quels services proposez-vous ?</h3>
-              <p className="faq-answer">
-                Nous proposons des services de massage à domicile, soins de beauté, 
-                garde d'enfants qualifiée et ménage professionnel sur Paris et région parisienne.
-              </p>
-            </div>
-
-            <div className="faq-item">
-              <h3 className="faq-question">Comment réserver une prestation ?</h3>
-              <p className="faq-answer">
-                Vous pouvez nous contacter par téléphone au +33 1 47 25 30 16, 
-                par email à Claude.Martin@auradev.fr ou via notre formulaire de contact. 
-                Nous vous répondrons sous 24h pour confirmer votre réservation.
-              </p>
-            </div>
-
-            <div className="faq-item">
-              <h3 className="faq-question">Quelles sont vos zones d'intervention ?</h3>
-              <p className="faq-answer">
-                Nous intervenons principalement sur Paris (75) et la proche banlieue 
-                (92, 93, 94). Contactez-nous pour vérifier la disponibilité dans votre secteur.
-              </p>
-            </div>
-
-            <div className="faq-item">
-              <h3 className="faq-question">Quels sont vos tarifs ?</h3>
-              <p className="faq-answer">
-                Nos tarifs varient selon le type de prestation et la durée. 
-                Contactez-nous pour un devis gratuit et personnalisé adapté à vos besoins.
-              </p>
-            </div>
-          </div>
-        </section>
-
       </main>
     </>
   );
