@@ -4,6 +4,7 @@ import heroWoman from "../../assets/hero-woman.png";
 import nailService from "../../assets/Rhapsody-Road-Photography-Sherille-Riley-Beauty-Edit-Launch-Nails-Brows-Mayfair-©-Emma-Lambe-0005-DSC_5730-scaled.jpg";
 import massageService from "../../assets/R.jpeg";
 import menageService from "../../assets/femme de ménage.png";
+import babyCard from "../../assets/Garde-denfant.png";
 
 export default function Home() {
   return (
@@ -48,7 +49,7 @@ export default function Home() {
               <img src={nailService} alt="Onglerie et soins beauté" />
               <div className="aura-services-card__overlay">
                 <h3 className="aura-services-card__title">
-                  Beauté &amp; soins
+                  Beauté
                 </h3>
                 <button className="aura-services-card__btn">
                   En savoir plus
@@ -72,7 +73,20 @@ export default function Home() {
               <img src={menageService} alt="Aide ménagère à domicile" />
               <div className="aura-services-card__overlay">
                 <h3 className="aura-services-card__title">
-                  Aide à domicile &amp; ménage
+                  Ménage
+                </h3>
+                <button className="aura-services-card__btn">
+                  En savoir plus
+                </button>
+              </div>
+            </article>
+
+            {/* Carte 4 */}
+            <article className="aura-services-card">
+              <img src={babyCard} alt="Garde d'enfant à domicile" />
+              <div className="aura-services-card__overlay">
+                <h3 className="aura-services-card__title">
+                  Garde d'enfant
                 </h3>
                 <button className="aura-services-card__btn">
                   En savoir plus
@@ -131,7 +145,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECTION QUI SOMMES NOUS (on laisse simple pour l’instant) */}
+      {/* SECTION QUI SOMMES NOUS */}
       <section className="aura-about">
         <div className="aura-about__inner">
           <h2 className="aura-about__title">Qui sommes-nous ?</h2>
@@ -150,7 +164,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* OFFRE SPÉCIALE – placeholder (tu pourras remplir après) */}
+      {/* OFFRE SPÉCIALE */}
       <section className="aura-annecdotes">
         <h2 className="aura-annecdotes__title">Offre spéciale</h2>
         <p className="aura-annecdotes__subtitle">
