@@ -1,5 +1,3 @@
-// C:\wamp64\www\aura_test\src\pages\CategoryPage\CategoryPage.jsx
-
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async"; 
@@ -10,13 +8,17 @@ import MassageImg from "../../assets/Massag.png";
 import MenageImg from "../../assets/Menage.png";
 import BeauteImg from "../../assets/manucure.png";
 
+import BalaiIcon from "../../assets/balai.svg";
+import MassageIcon from "../../assets/massage.svg";
+import BabyIcon from "../../assets/baby.svg";
+import ManucureIcon from "../../assets/manucure.svg";
+
 import "./CategoryPage.scss";
 
 const OFFERS_API_URL = "/api/offers/index.php";
 
 /**
  * Associe une image à un libellé de catégorie.
- * Utilisé pour les catégories qui ne sont pas dans CATEGORY_CONTENT.
  */
 const getHeroImageForLabel = (label) => {
   const lower = String(label || "").toLowerCase();
@@ -46,11 +48,40 @@ const getHeroImageForLabel = (label) => {
     return BeauteImg;
   }
 
-  // Image par défaut si aucun mot-clé ne matche
   return MenageImg;
 };
 
-// Contenu marketing par catégorie
+const getIntroIconForLabel = (label) => {
+  const lower = String(label || "").toLowerCase();
+
+  if (lower.includes("garde") && lower.includes("enfant")) {
+    return BabyIcon;
+  }
+
+  if (lower.includes("massage")) {
+    return MassageIcon;
+  }
+
+  if (
+    lower.includes("ménage") ||
+    lower.includes("menage") ||
+    lower.includes("aide ménagère")
+  ) {
+    return BalaiIcon;
+  }
+
+  if (
+    lower.includes("beauté") ||
+    lower.includes("beaute") ||
+    lower.includes("esthétique") ||
+    lower.includes("manucure")
+  ) {
+    return ManucureIcon;
+  }
+
+  return BalaiIcon;
+};
+
 const CATEGORY_CONTENT = {
   "Garde d'enfants": {
     serviceName: "Garde d'enfants à domicile",
@@ -203,16 +234,13 @@ const CATEGORY_CONTENT = {
   },
 };
 
-// Fallback générique si pas de contenu spécifique
 const getCategoryContent = (categoryKey, offersByCategory) => {
   const rawLabel = offersByCategory[0]?.category || categoryKey || "Service";
 
-  // Si on a un contenu marketing défini, on le retourne tel quel
   if (CATEGORY_CONTENT[rawLabel]) {
     return CATEGORY_CONTENT[rawLabel];
   }
 
-  // On nettoie juste les underscores / tirets
   const formatted = String(rawLabel).replace(/[_-]/g, " ").trim();
 
   return {
@@ -249,16 +277,14 @@ const CategoryPage = () => {
   const [loadingOffers, setLoadingOffers] = useState(false);
   const [errorOffers, setErrorOffers] = useState(null);
 
-  // panneau de détail CardOffers
   const [selectedOffer, setSelectedOffer] = useState(null);
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] =
+    useState(0);
 
-  // mini-carrousel de témoignages
-  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
-
-  // à brancher plus tard sur AuthContext
   const isCustomer = false;
 
-  const getProviderLabel = (offer) => offer.provider_name || "Prestataire Aura";
+  const getProviderLabel = (offer) =>
+    offer.provider_name || "Prestataire Aura";
 
   const fetchOffers = async () => {
     setLoadingOffers(true);
@@ -285,6 +311,11 @@ const CategoryPage = () => {
         data = JSON.parse(rawText);
       } catch (e) {
         console.warn("Réponse non-JSON CategoryPage offers :", rawText);
+        setErrorOffers(
+          "La réponse du serveur n'est pas au format JSON. Vérifiez l'API."
+        );
+        setLoadingOffers(false);
+        return;
       }
 
       if (!response.ok) {
@@ -319,7 +350,6 @@ const CategoryPage = () => {
     setCurrentTestimonialIndex(0);
   }, [categoryKey]);
 
-  // Offres correspondant à cette catégorie
   const offersByCategory = useMemo(() => {
     if (!categoryKey) return [];
     return offers.filter((o) => o.category === categoryKey);
@@ -347,10 +377,9 @@ const CategoryPage = () => {
     ? baseContent.testimonials
     : [];
 
-  // Image finale utilisée dans le hero
   const heroImage = baseContent.heroImage || getHeroImageForLabel(serviceName);
+  const introIcon = getIntroIconForLabel(serviceName);
 
-  // Données pour CardOffers
   const paginatedOffers = offersByCategory.slice(0, 4);
   const filteredOffersCount = offersByCategory.length;
   const currentPage = 1;
@@ -431,6 +460,11 @@ const CategoryPage = () => {
         <div className="category-page__section-inner category-page__section-inner--intro">
           <div className="category-page__intro-media">
             <div className="category-page__intro-ellipse" />
+            <img
+              src={introIcon}
+              alt={serviceName}
+              className="category-page__intro-icon"
+            />
           </div>
 
           <div className="category-page__intro-text">
@@ -480,7 +514,7 @@ const CategoryPage = () => {
         </section>
       )}
 
-      {/* SECTION APPROCHE + MINI CARROUSEL TÉMOIGNAGES */}
+      {/* SECTION APPROCHE + TÉMOIGNAGES */}
       {testimonials.length > 0 && currentTestimonial && (
         <section className="category-page__section category-page__section--testimonials">
           <div className="category-page__section-inner category-page__section-inner--testimonials">
@@ -576,7 +610,7 @@ const CategoryPage = () => {
         </div>
       </section>
 
-      {/* SECTION OFFRES + CardOffers */}
+      {/* SECTION OFFRES */}
       <section
         id="offres"
         className="category-page__section category-page__section--offers"
@@ -624,12 +658,13 @@ const CategoryPage = () => {
                 onRemoveFavorite={() => {}}
                 favLoading={false}
                 getProviderLabel={getProviderLabel}
-                selectedOffer={selectedOffer}
-                onSelectOffer={setSelectedOffer}
-                onCloseDetail={() => setSelectedOffer(null)}
+                selectedOffer={null}
+                onSelectOffer={() => {}}
+                onCloseDetail={() => {}}
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
+                isSelectable={false}
               />
 
               <div className="category-page__see-all">

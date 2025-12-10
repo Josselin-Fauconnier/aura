@@ -1,13 +1,15 @@
-// C:\wamp64\www\aura_test\src\pages\CategoryOffers\CategoryOffers.jsx
-
 import { useState, useMemo, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useAuth } from "../../contexts/useAuth";
 import FilterBar from "../../components/FilterBar/FilterBar";
 import CardOffers from "../../components/CardOffers/CardOffers";
-import { filterAndSortOffers } from "../ServiceCatalog/ServiceCatalog";
 import "./CategoryOffers.css";
+import {
+  filterAndSortOffers,
+  normalizeOffersAvailability,
+} from "../ServiceCatalog/ServiceCatalog";
+
 
 const OFFERS_API_URL = "/api/offers/index.php";
 const FAV_OFFERS_API_URL = "/api/fav_offers/index.php";
@@ -27,7 +29,7 @@ const CategoryOffers = () => {
 
   const [providers, setProviders] = useState([]);
 
-  // Filtres (même logique que ServiceCatalog)
+  // Filtres
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDistance, setSelectedDistance] = useState("");
@@ -68,7 +70,6 @@ const CategoryOffers = () => {
     return `${p.firstname} ${p.name}`;
   };
 
-  // Chargement des offres (toutes, on filtrera ensuite par catégorie)
   const fetchOffers = async () => {
     setLoadingOffers(true);
     setErrorOffers(null);
@@ -93,6 +94,11 @@ const CategoryOffers = () => {
         data = JSON.parse(rawText);
       } catch (e) {
         console.warn("Réponse non-JSON CategoryOffers offers :", rawText);
+        setErrorOffers(
+          "La réponse du serveur n'est pas au format JSON. Vérifiez l'API."
+        );
+        setLoadingOffers(false);
+        return;
       }
 
       if (!response.ok) {
@@ -110,7 +116,7 @@ const CategoryOffers = () => {
         return;
       }
 
-      setOffers(data);
+      setOffers(normalizeOffersAvailability(data));
       setLoadingOffers(false);
     } catch (err) {
       console.error("Erreur réseau CategoryOffers offers :", err);
@@ -137,6 +143,7 @@ const CategoryOffers = () => {
         data = JSON.parse(rawText);
       } catch (e) {
         console.warn("Réponse non-JSON providers (CategoryOffers):", rawText);
+        return;
       }
 
       if (!response.ok || !Array.isArray(data)) {
@@ -185,7 +192,11 @@ const CategoryOffers = () => {
       try {
         data = JSON.parse(rawText);
       } catch (e) {
-        console.warn("Réponse non-JSON fav_offers (CategoryOffers):", rawText);
+        console.warn(
+          "Réponse non-JSON fav_offers (CategoryOffers):",
+          rawText
+        );
+        return;
       }
 
       if (!response.ok || !Array.isArray(data)) {
@@ -243,7 +254,8 @@ const CategoryOffers = () => {
   const distances = useMemo(() => {
     const set = new Set();
     offersByCategory.forEach((o) => {
-      if (o.perimeter_of_displacement) set.add(o.perimeter_of_displacement);
+      if (o.perimeter_of_displacement)
+        set.add(o.perimeter_of_displacement);
     });
     return Array.from(set);
   }, [offersByCategory]);
@@ -251,12 +263,15 @@ const CategoryOffers = () => {
   const disponibilities = useMemo(() => {
     const set = new Set();
     offersByCategory.forEach((o) => {
-      if (o.disponibility) set.add(o.disponibility);
+      const label =
+        (typeof o.availabilityLabel === "string" && o.availabilityLabel) ||
+        (typeof o.disponibility === "string" && o.disponibility);
+      if (label) set.add(label);
     });
     return Array.from(set);
   }, [offersByCategory]);
 
-  // Filtrage + tri (logique commune, appliquée UNIQUEMENT sur offersByCategory)
+  // Filtrage + tri sur les offres de cette catégorie
   const filteredAndSortedOffers = useMemo(
     () =>
       filterAndSortOffers(offersByCategory, {
@@ -312,7 +327,8 @@ const CategoryOffers = () => {
       const response = await fetch(FAV_OFFER_API_URL, {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          "Content-Type":
+            "application/x-www-form-urlencoded;charset=UTF-8",
           "X-API-KEY": auth.token,
         },
         body: formBody.toString(),
@@ -336,7 +352,10 @@ const CategoryOffers = () => {
       }
 
       if (!response.ok) {
-        alert((data && data.message) || "Erreur lors de l’ajout aux favoris.");
+        alert(
+          (data && data.message) ||
+            "Erreur lors de l’ajout aux favoris."
+        );
         setFavLoading(false);
         return;
       }
@@ -352,7 +371,9 @@ const CategoryOffers = () => {
 
   const handleRemoveFavorite = async (idOffer) => {
     if (!isCustomer) {
-      alert("Connectez-vous en tant que client pour gérer vos favoris.");
+      alert(
+        "Connectez-vous en tant que client pour gérer vos favoris."
+      );
       return;
     }
     if (!auth.token || !customerId) {
@@ -370,7 +391,8 @@ const CategoryOffers = () => {
       const response = await fetch(FAV_OFFER_API_URL, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          "Content-Type":
+            "application/x-www-form-urlencoded;charset=UTF-8",
           "X-API-KEY": auth.token,
         },
         body: formBody.toString(),
@@ -395,7 +417,8 @@ const CategoryOffers = () => {
 
       if (!response.ok) {
         alert(
-          (data && data.message) || "Erreur lors de la suppression du favori."
+          (data && data.message) ||
+            "Erreur lors de la suppression du favori."
         );
         setFavLoading(false);
         return;
@@ -423,7 +446,6 @@ const CategoryOffers = () => {
     setMaxPriceFilter("");
   };
 
-  // Titre lisible à partir du slug
   const formatCategoryTitle = (key) => {
     if (!key) return "Catégorie";
     return key
@@ -449,7 +471,6 @@ const CategoryOffers = () => {
         </p>
       </header>
 
-      {/* Barre de recherche + filtres + tri (même composant que ServiceCatalog) */}
       <FilterBar
         offers={offersByCategory}
         searchTerm={searchTerm}
@@ -470,7 +491,6 @@ const CategoryOffers = () => {
         onReset={handleResetFilters}
       />
 
-      {/* Cards + panneau détail + pagination (CardOffers) */}
       <CardOffers
         paginatedOffers={paginatedOffers}
         filteredOffersCount={filteredAndSortedOffers.length}

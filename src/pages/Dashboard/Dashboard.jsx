@@ -1,17 +1,14 @@
-// src/pages/Dashboard/Dashboard.jsx
+import DashLayout from "../../components/Dashboard/DashLayout";
 import { useParams } from "react-router-dom";
-// import Sidebar from "../../components/Sidebar/Sidebar";
-// import BottomBar from "../../components/ButtomBar/ButtomBar";
-import DashboardContent from "../../components/DashboardContent/DashboardContent";
+import "../../mocks/data.json";
 
 export default function Dashboard() {
-  const { role, page } = useParams();
+  // On récupère le role depuis l'URL params : /dashboard/:role
+  const { role } = useParams();
 
-  return (
-    <div className="dashboard">
-      {/* <Sidebar role={role} /> */}
-      <DashboardContent role={role} page={page} />
-      {/* <BottomBar role={role} /> */}
-    </div>
-  );
+  // Vérifie si le rôle est valide (provider ou client)
+  const validRole =
+    role === "provider" || role === "customer" ? role : "customer";
+
+  return <DashLayout userRole={validRole} />;
 }
