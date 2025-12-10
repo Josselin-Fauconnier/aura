@@ -30,20 +30,6 @@ require_once "../connection.php";
 require_once "../tokens.php";
 require_once "../offer_validation.php";
 
-require __DIR__ . '/../../../vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '\..\..\..');
-$dotenv->load();
-
-
-header("Content-Type: application/json; charset=UTF-8");
-
-if (isset($_ENV["MAPS_API_KEY"]))
-    $API_KEY = $_ENV["MAPS_API_KEY"];
-else
-    $API_KEY = "FAIL";
-// https://geocode.maps.co/search?q=555+5th+Ave+New+York+NY+10017+US&api_key=YOUR_SECRET_API_KEY
-
 function getJsonBody(): array
 {
     $raw = file_get_contents("php://input");
@@ -85,8 +71,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
 function offer_get(array $requestData): void
 {
     $conn = Connection::getConnection();
-
-    //$data =  https://geocode.maps.co/search?q=555+5th+Ave+New+York+NY+10017+US&api_key=YOUR_SECRET_API_KEY
 
     if (!isset($requestData["id_offer"])) {
         echo json_encode(["message" => "id_offer is missing"]);
@@ -264,9 +248,7 @@ function offer_register(array $requestData): void
     try {
         $sql = "INSERT INTO offers (description, duration, category, perimeter_of_displacement, price, id_provider) VALUES (:description, :duration, :category, :perimeter_of_displacement, :price, :id_provider);";
         $stmt = $conn->prepare($sql);
-        /* var_dump($sql);
-        var_dump($requestData["category"]); */
-        $res = $stmt->execute([
+        $stmt->execute([
             ":description" => $requestData["description"],
             ":duration" => $requestData["duration"],
             ":category" => $requestData["category"],
@@ -346,13 +328,6 @@ function disponibilities_return(int $id_offer = -1): array
 {
     $conn = Connection::getConnection();
 
-    /**
-     * 1) On recupere toutes les disponibilités pour une offre
-     * 2) On recupere tous les services qui ne sont pas encore effectuées 
-     * 3) On compare les disponibilitée avec les services à venir pour créer 
-     * un liste de disponibilités valide (on supprime les plages trop courtes)
-     */
-
     $now = date("Y-m-d H:i:s");
 
     try {
@@ -374,9 +349,6 @@ function disponibilities_return(int $id_offer = -1): array
         if ($service["service_date"] > $now)
             array_push($reserved, $service["service_date"]);
     }
-
-    /* echo "reserved";
-    print_r($reserved); */
 
     try {
         $sql = "SELECT duration FROM offers WHERE id_offer=:id_offer";
@@ -411,9 +383,6 @@ function disponibilities_return(int $id_offer = -1): array
     foreach ($res as $dispo) {
         array_push($disponibilities, ["start_date" => $dispo["start_date"], "end_date" => $dispo["end_date"]]);
     }
-
-    /*  echo "disponibilities";
-    print_r($disponibilities); */
 
     $dispos = calculate_dispos($disponibilities, $reserved, $duration);
 
@@ -457,11 +426,6 @@ function merge_disponibilities(array $disponibilities): array
     $new_dispos = array();
     $plages = array();
 
-    /**
-     * Boucle qui transforme les disponibilitées en nouvelles plages elargies
-     * Pas 1: Creation plage la plus large possible à partir du 1er element de la liste
-     * Pas 2: Elimination de tous les elements de la liste compris dans cette plage
-     */
     while (count($disponibilities) > 0) {
         $new_dispos = [];
         $plage = $disponibilities[0];

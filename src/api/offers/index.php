@@ -15,16 +15,6 @@ declare(strict_types=1);
 require_once "../connection.php";
 require_once "../offer_validation.php";
 
-require __DIR__ . '/../../../vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '\..\..\..');
-$dotenv->load();
-
-if (isset($_ENV["MAPS_API_KEY"]))
-    $API_KEY = $_ENV["MAPS_API_KEY"];
-else
-    $API_KEY = "FAIL";
-
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $requestData = $_GET;
