@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Home.scss";
 
 import heroWoman from "../../assets/hero-woman.png";
@@ -51,9 +52,12 @@ export default function Home() {
                 <h3 className="aura-services-card__title">
                   Beauté
                 </h3>
-                <button className="aura-services-card__btn">
+                <Link
+                  to="/categorie/Beauté"
+                  className="aura-services-card__btn"
+                >
                   En savoir plus
-                </button>
+                </Link>
               </div>
             </article>
 
@@ -62,9 +66,12 @@ export default function Home() {
               <img src={massageService} alt="Moment de détente massage" />
               <div className="aura-services-card__overlay">
                 <h3 className="aura-services-card__title">Bien-être</h3>
-                <button className="aura-services-card__btn">
+                <Link
+                  to="/categorie/Massage"
+                  className="aura-services-card__btn"
+                >
                   En savoir plus
-                </button>
+                </Link>
               </div>
             </article>
 
@@ -75,9 +82,12 @@ export default function Home() {
                 <h3 className="aura-services-card__title">
                   Ménage
                 </h3>
-                <button className="aura-services-card__btn">
+                <Link
+                  to="/categorie/Ménage"
+                  className="aura-services-card__btn"
+                >
                   En savoir plus
-                </button>
+                </Link>
               </div>
             </article>
 
@@ -88,9 +98,12 @@ export default function Home() {
                 <h3 className="aura-services-card__title">
                   Garde d'enfant
                 </h3>
-                <button className="aura-services-card__btn">
+                <Link
+                  to="/categorie/Garde_denfant"
+                  className="aura-services-card__btn"
+                >
                   En savoir plus
-                </button>
+                </Link>
               </div>
             </article>
           </div>
