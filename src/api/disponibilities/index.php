@@ -110,8 +110,9 @@ function calculate_dispos(array $disponibilities, array $reserved, int $duration
     }
 
     // Ici tu peux éventuellement fusionner les plages si besoin
-    return $disponibilities;
-}
+    if (count($reserved) < 1) {
+        return $disponibilities;
+    }
 
 function disponibilities_get(array $requestData): void
 {
