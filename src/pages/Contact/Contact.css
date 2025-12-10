@@ -98,6 +98,15 @@
   color: #ffb798;
   line-height: 1.8;
 }
+.info-card a {
+  color: #ffb798;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.info-card a:hover {
+  color: #ffb798;
+}
 
 .contact-form-section {
   padding: 80px 20px 100px;
@@ -205,7 +214,7 @@
 .contact-form .form-group textarea:focus {
   outline: none;
   border-color: #ffb798;
-  box-shadow: 0 0 0 3px #ffb798;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 .contact-form .form-group input.error,
 .contact-form .form-group textarea.error {
@@ -292,4 +301,4 @@
   .contact-form-section {
     padding: 60px 20px 80px;
   }
-}
+}/*# sourceMappingURL=Contact.css.map */
