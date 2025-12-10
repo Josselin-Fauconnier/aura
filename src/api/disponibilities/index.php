@@ -38,13 +38,13 @@ function normalize_duration(?string $durationRaw): int
     if ($duration === '' || $duration === 'variable') {
         return 60; 
     }
-
+   
     if (preg_match('/^(\d+)h(\d+)?$/', $duration, $m)) {
         $hours  = (int) $m[1];
         $mins   = isset($m[2]) ? (int) $m[2] : 0;
         return $hours * 60 + $mins;
     }
-
+    
     if (preg_match('/^(\d+)\s*min$/', $duration, $m)) {
         return (int) $m[1];
     }
@@ -52,7 +52,7 @@ function normalize_duration(?string $durationRaw): int
     if (preg_match('/^(\d+)h$/', $duration, $m)) {
         return (int) $m[1] * 60;
     }
-
+   
     if (is_numeric($duration)) {
         return (int) $duration;
     }
@@ -75,11 +75,12 @@ function calculate_dispos(array $disponibilities, array $reserved, int $duration
 
         foreach ($disponibilities as $d) {
            
+            if ($r < $d["start_date"] || $r > $d["end_date"]) {
                 $tmp_dispos[] = $d;
                 continue;
             }
 
-           
+          
             $p1s = DateTime::createFromFormat($format, $d["start_date"]);
             $p1e = DateTime::createFromFormat($format, $r);
 
@@ -123,7 +124,7 @@ function disponibilities_get(array $requestData): void
     }
 
     $idOffer = (int) $requestData["id_offer"];
-    /**
+        /**
      * 1) On recupere toutes les disponibilités pour une offre
      * 2) On recupere tous les services qui ne sont pas encore effectuées 
      * 3) On compare les disponibilitée avec les services à venir pour créer 
@@ -155,7 +156,7 @@ function disponibilities_get(array $requestData): void
         }
     }
 
-   
+
     try {
         $sql = "SELECT duration FROM offers WHERE id_offer = :id_offer";
         $stmt = $conn->prepare($sql);
@@ -200,7 +201,7 @@ function disponibilities_get(array $requestData): void
         ];
     }
 
-   
+
     $dispos = calculate_dispos($disponibilities, $reserved, $duration);
 
     echo json_encode($dispos);
