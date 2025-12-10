@@ -141,7 +141,7 @@ function offers_get($requestData)
         $r["disponibility"] = disponibilities_return($r["id_offer"]);
     }
 
-    $res = clear_no_disponibilities($res);
+    //$res = clear_no_disponibilities($res);
     // On elimine les offres qui n'ont pas la disponibilité demandé ou pas de disponibilité
     if (isset($requestData["disponibility"])) {
         $res = check_has_disponibility($res, $requestData["disponibility"]);
@@ -250,7 +250,7 @@ function disponibilities_return(int $id_offer = -1): array
     /* if ($id_offer == 2)
         var_dump($disponibilities); */
 
-    $dispos = calculate_dispos($disponibilities, $reserved, $duration);
+    $dispos = calculate_dispos($disponibilities, $reserved, intval($duration));
 
     /* if ($id_offer == 2)
         var_dump($dispos); */

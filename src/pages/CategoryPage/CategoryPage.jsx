@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async"; 
 import CardOffers from "../../components/CardOffers/CardOffers";
 
 import Baby from "../../assets/Garde_denfant.png";
@@ -267,6 +268,7 @@ const CategoryPage = () => {
       const params = new URLSearchParams();
       params.append("limit", "200");
 
+
       const response = await fetch(`${OFFERS_API_URL}?${params.toString()}`, {
         method: "GET",
       });
@@ -374,6 +376,10 @@ const CategoryPage = () => {
 
   return (
     <main className="category-page">
+      <Helmet>
+              <title>Services de {serviceName}</title>
+            </Helmet>
+
       {/* HERO */}
       <section className="category-page__hero">
         <div className="category-page__hero-inner">

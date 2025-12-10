@@ -2,11 +2,12 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { useAuth } from "../../contexts/useAuth";
 import FilterBar from "../../components/FilterBar/FilterBar";
 import CardOffers from "../../components/CardOffers/CardOffers";
 import { filterAndSortOffers } from "../ServiceCatalog/ServiceCatalog";
-import "./CategoryOffers.scss";
+import "./CategoryOffers.css";
 
 const OFFERS_API_URL = "/api/offers/index.php";
 const FAV_OFFERS_API_URL = "/api/fav_offers/index.php";
@@ -435,6 +436,9 @@ const CategoryOffers = () => {
 
   return (
     <main className="categoryOffers">
+       <Helmet>
+              <title>Nos offres</title>
+            </Helmet>
       <header className="categoryOffers__header">
         <h1 className="categoryOffers__title">
           Offres de {categoryTitle.toLowerCase()}

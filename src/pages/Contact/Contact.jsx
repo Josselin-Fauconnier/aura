@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 import './Contact.css';
 
@@ -114,6 +115,9 @@ const Contact = () => {
     <>
 
       <main className="aura-contact">
+      <Helmet>
+        <title>Hello World</title>
+      </Helmet>
         {/* Section Hero */}
         <section className="contact-hero">
           <div className="contact-hero__overlay"></div>
