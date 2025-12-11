@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../../contexts/useAuth";
+import { useAuth } from "../../contexts/UseAuth";
 
 const strictEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("customer"); 
+  const [role, setRole] = useState("customer");
   const [loading, setLoading] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState(null);
@@ -30,20 +30,21 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessage(null);
-
-    if (emailError) {
-      setErrorMessage("Veuillez corriger le format de l'email.");
-      setLoading(false);
-      return;
-    }
-
     try {
-      
-      const loginUrl =
-        role === "customer"
-          ? "/api/customer_connect/index.php"
-          : "/api/provider_connect/index.php";
+      let loginUrl = "";
+      switch (role) {
+        case "customer":
+          loginUrl = "/api/customer_connect/index.php";
+          break;
+        case "provider":
+          loginUrl = "/api/provider_connect/index.php";
+          break;
+        case "admin":
+          loginUrl = "/api/admin_connect/index.php";
+          break;
+        default:
+          loginUrl = "/api/customer_connect/index.php";
+      }
 
       const formData = new FormData();
       formData.append("email", email);
@@ -60,25 +61,52 @@ const Login = () => {
         throw new Error(loginData.message || "Échec de la connexion");
       }
 
-      const backendRole =
-        (loginData.user && loginData.user.role) || loginData.role;
-      const finalRole = backendRole || role || "customer";
+      let finalRole = role;
+      let user = {};
+      if (role === "admin") {
+        user = { email, role: "admin" };
+      } else {
+        const backendRole =
+          (loginData.user && loginData.user.role) || loginData.role;
+        finalRole = backendRole || role || "customer";
+        user = {
+          ...loginData.user,
+          role: finalRole,
+        };
+        // Correction : pour le provider, récupère les infos complètes
+        if (
+          finalRole === "provider" &&
+          loginData.user &&
+          loginData.user.id_provider
+        ) {
+          try {
+            const providerRes = await fetch(
+              `/api/provider/index.php?id_provider=${loginData.user.id_provider}`,
+              {
+                method: "GET",
+                headers: { "X-API-KEY": loginData.token },
+              }
+            );
+            const providerData = await providerRes.json();
+            user = {
+              ...providerData,
+              role: "provider",
+            };
+          } catch {
+            // fallback : garde user minimal
+          }
+        }
+      }
 
       const token = loginData.token;
-      const user = {
-        ...loginData.user,
-        role: finalRole, 
-      };
 
-      console.log("✅ Login successful:", { token, user });
+      console.log("✅ Connexion réussie :", { token, user });
 
-     
       login({
         token: token,
         user: user,
       });
 
-     
       navigate(`/dashboard/${finalRole}`);
     } catch (error) {
       console.error("Login error:", error);
@@ -117,6 +145,7 @@ const Login = () => {
               >
                 <option value="customer">Client</option>
                 <option value="provider">Prestataire</option>
+                <option value="admin">Admin</option>
               </select>
             </label>
           </div>

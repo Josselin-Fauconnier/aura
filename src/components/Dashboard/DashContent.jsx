@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
-import Profile from "./components/Profile";
-import History from "./components/History";
-import Comments from "./components/Comments";
-import FavoriteOffers from "./components/FavoriteOffers";
+import CustomerProfile from "./components/CustomerProfile";
+import CustomerHistory from "./components/CustomerHistory";
+import CustomerComments from "./components/CustomerComments";
+import CustomerFavoriteOffers from "./components/CustomerFavoriteOffers";
+import AdminAllOffers from "./components/AdminAllOffers";
+import AdminAllProviders from "./components/AdminAllProviders";
+import AdminAllCustomers from "./components/AdminAllCustomers";
+import ProviderProfile from "./components/ProviderProfile";
+import ProviderOffers from "./components/ProviderOffers";
 
 export default function DashContent({ user }) {
   const [activePage, setActivePage] = useState("profil");
@@ -30,10 +35,38 @@ export default function DashContent({ user }) {
     >
       <h1>Bienvenue, {user.firstname} !</h1>
 
-      {activePage === "profil" && <Profile user={user} />}
-      {activePage === "historique" && <History user={user} />}
-      {activePage === "commentaires" && <Comments user={user} />}
-      {activePage === "offres-favoris" && <FavoriteOffers user={user} />}
+      {/* Provider pages */}
+      {user.role === "provider" && activePage === "profil" && (
+        <ProviderProfile user={user} />
+      )}
+      {user.role === "provider" && activePage === "mes-offres" && (
+        <ProviderOffers user={user} />
+      )}
+
+      {/* Customer pages */}
+      {user.role === "customer" && activePage === "profil" && (
+        <CustomerProfile user={user} />
+      )}
+      {user.role === "customer" && activePage === "historique" && (
+        <CustomerHistory user={user} />
+      )}
+      {user.role === "customer" && activePage === "commentaires" && (
+        <CustomerComments user={user} />
+      )}
+      {user.role === "customer" && activePage === "offres-favoris" && (
+        <CustomerFavoriteOffers user={user} />
+      )}
+
+      {/* Admin pages */}
+      {user.role === "admin" && activePage === "toutes-les-offres" && (
+        <AdminAllOffers />
+      )}
+      {user.role === "admin" && activePage === "tous-les-prestataires" && (
+        <AdminAllProviders />
+      )}
+      {user.role === "admin" && activePage === "tous-les-clients" && (
+        <AdminAllCustomers />
+      )}
     </main>
   );
 }
