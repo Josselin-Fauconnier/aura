@@ -73,6 +73,29 @@ const Login = () => {
           ...loginData.user,
           role: finalRole,
         };
+        // Correction : pour le provider, récupère les infos complètes
+        if (
+          finalRole === "provider" &&
+          loginData.user &&
+          loginData.user.id_provider
+        ) {
+          try {
+            const providerRes = await fetch(
+              `/api/provider/index.php?id_provider=${loginData.user.id_provider}`,
+              {
+                method: "GET",
+                headers: { "X-API-KEY": loginData.token },
+              }
+            );
+            const providerData = await providerRes.json();
+            user = {
+              ...providerData,
+              role: "provider",
+            };
+          } catch {
+            // fallback : garde user minimal
+          }
+        }
       }
 
       const token = loginData.token;
