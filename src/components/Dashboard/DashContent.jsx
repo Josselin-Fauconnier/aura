@@ -3,6 +3,9 @@ import Profile from "./components/Profile";
 import History from "./components/History";
 import Comments from "./components/Comments";
 import FavoriteOffers from "./components/FavoriteOffers";
+import AllOffers from "./AllOffers";
+import AllProviders from "./AllProviders";
+import AllCustomers from "./AllCustomers";
 
 export default function DashContent({ user }) {
   const [activePage, setActivePage] = useState("profil");
@@ -34,6 +37,11 @@ export default function DashContent({ user }) {
       {activePage === "historique" && <History user={user} />}
       {activePage === "commentaires" && <Comments user={user} />}
       {activePage === "offres-favoris" && <FavoriteOffers user={user} />}
+
+      {/* Admin pages */}
+      {activePage === "toutes-les-offres" && <AllOffers />}
+      {activePage === "tous-les-prestataires" && <AllProviders />}
+      {activePage === "tous-les-clients" && <AllCustomers />}
     </main>
   );
 }
