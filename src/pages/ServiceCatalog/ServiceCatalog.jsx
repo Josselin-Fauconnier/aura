@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../contexts/useAuth";
 import FilterBar from "../../components/FilterBar/FilterBar";
 import CardOffers from "../../components/CardOffers/CardOffers";
+import { Helmet } from "react-helmet-async";
 import "./ServiceCatalog.scss";
 
 const OFFERS_API_URL = "/api/offers/index.php";
@@ -572,7 +573,21 @@ const ServiceCatalog = () => {
 
   return (
     <main className="service-catalog">
-      {/* HERO */}
+      <>
+  <Helmet>
+    <title>Catalogue des services à domicile | Aura</title>
+    <meta
+      name="description"
+      content="Découvrez le catalogue des services Aura : ménage, garde d’enfants, massage, beauté et autres prestations à domicile, filtrables par prix, distance et disponibilité."
+    />
+    
+   
+  </Helmet>
+
+  
+</>
+
+     {/* HERO */}
       <section className="service-catalog__hero">
         <div className="service-catalog__hero-inner">
           <h1 className="service-catalog__title">
