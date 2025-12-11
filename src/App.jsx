@@ -4,9 +4,16 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Contact from "./pages/Contact/Contact";
+import { HelmetProvider } from 'react-helmet-async';
+
+
+
+
+
 import Register from "./pages/Register/Register";
 import Error from "./pages/Error/Error";
 import Legal from "./pages/Legal/Legal";
+
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import CategoryOffers from "./pages/CategoryOffers/CategoryOffers";
 import OfferDetail from "./pages/OfferDetail/OfferDetail";
@@ -16,6 +23,8 @@ import "./styles/main.css";
 
 const App = () => {
   return (
+    <HelmetProvider>
+
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -48,6 +57,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </HelmetProvider>
   );
 };
 

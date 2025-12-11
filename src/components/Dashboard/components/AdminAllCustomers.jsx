@@ -5,7 +5,7 @@ export default function AllCustomers() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/customer/index.php")
+    fetch("/api/customers/index.php")
       .then((res) => res.json())
       .then((data) => {
         setCustomers(data);
