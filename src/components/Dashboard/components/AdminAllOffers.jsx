@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CardOffers from "../CardOffers/CardOffers";
+import CardOffers from "../../CardOffers/CardOffers";
 
 export default function AllOffers() {
   const [offers, setOffers] = useState([]);

@@ -12,8 +12,8 @@ export default function DashSidebar({ user, role }) {
     ];
   } else if (role === "provider") {
     navLinks = [
+      { label: "Profil", page: "profil" },
       { label: "Mes offres", page: "mes-offres" },
-      { label: "Mes rendez-vous", page: "mes-rdv" },
     ];
   } else {
     navLinks = [
