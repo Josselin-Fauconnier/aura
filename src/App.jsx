@@ -9,7 +9,6 @@ import Error from "./pages/Error/Error";
 import Legal from "./pages/Legal/Legal";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import CategoryOffers from "./pages/CategoryOffers/CategoryOffers";
-import OfferDetail from "./pages/OfferDetail/OfferDetail";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ServiceCatalog from "./pages/ServiceCatalog/ServiceCatalog";
 import "./styles/main.css";
