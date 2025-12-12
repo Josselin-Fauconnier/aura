@@ -16,7 +16,6 @@ import Legal from "./pages/Legal/Legal";
 
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import CategoryOffers from "./pages/CategoryOffers/CategoryOffers";
-import OfferDetail from "./pages/OfferDetail/OfferDetail";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ServiceCatalog from "./pages/ServiceCatalog/ServiceCatalog";
 import "./styles/main.css";
@@ -44,12 +43,8 @@ const App = () => {
             {/* Formulaire d'inscription */}
             <Route path="/inscription" element={<Register />} />
 
-            {/* Détail d’une offre */}
-            <Route path="/offred/:id" element={<OfferDetail />} />
-
             <Route path="/Legal" element={<Legal />} />
             <Route path="/contact" element={<Contact />} />
-            
 
             <Route path="*" element={<Error />} />
           </Route>
