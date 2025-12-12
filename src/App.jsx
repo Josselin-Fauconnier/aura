@@ -35,12 +35,8 @@ const App = () => {
             {/* Formulaire d'inscription */}
             <Route path="/inscription" element={<Register />} />
 
-            {/* Détail d’une offre */}
-            <Route path="/offred/:id" element={<OfferDetail />} />
-
             <Route path="/Legal" element={<Legal />} />
             <Route path="/contact" element={<Contact />} />
-            
 
             <Route path="*" element={<Error />} />
           </Route>

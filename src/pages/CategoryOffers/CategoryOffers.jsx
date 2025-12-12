@@ -90,7 +90,7 @@ const CategoryOffers = () => {
       let data = null;
       try {
         data = JSON.parse(rawText);
-      } catch (e) {
+      } catch {
         console.warn("Réponse non-JSON CategoryOffers offers :", rawText);
         setErrorOffers(
           "La réponse du serveur n'est pas au format JSON. Vérifiez l'API."
@@ -190,10 +190,7 @@ const CategoryOffers = () => {
       try {
         data = JSON.parse(rawText);
       } catch (e) {
-        console.warn(
-          "Réponse non-JSON fav_offers (CategoryOffers):",
-          rawText
-        );
+        console.warn("Réponse non-JSON fav_offers (CategoryOffers):", rawText);
         return;
       }
 
@@ -252,8 +249,7 @@ const CategoryOffers = () => {
   const distances = useMemo(() => {
     const set = new Set();
     offersByCategory.forEach((o) => {
-      if (o.perimeter_of_displacement)
-        set.add(o.perimeter_of_displacement);
+      if (o.perimeter_of_displacement) set.add(o.perimeter_of_displacement);
     });
     return Array.from(set);
   }, [offersByCategory]);
@@ -325,8 +321,7 @@ const CategoryOffers = () => {
       const response = await fetch(FAV_OFFER_API_URL, {
         method: "POST",
         headers: {
-          "Content-Type":
-            "application/x-www-form-urlencoded;charset=UTF-8",
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
           "X-API-KEY": auth.token,
         },
         body: formBody.toString(),
@@ -350,10 +345,7 @@ const CategoryOffers = () => {
       }
 
       if (!response.ok) {
-        alert(
-          (data && data.message) ||
-            "Erreur lors de l’ajout aux favoris."
-        );
+        alert((data && data.message) || "Erreur lors de l’ajout aux favoris.");
         setFavLoading(false);
         return;
       }
@@ -369,9 +361,7 @@ const CategoryOffers = () => {
 
   const handleRemoveFavorite = async (idOffer) => {
     if (!isCustomer) {
-      alert(
-        "Connectez-vous en tant que client pour gérer vos favoris."
-      );
+      alert("Connectez-vous en tant que client pour gérer vos favoris.");
       return;
     }
     if (!auth.token || !customerId) {
@@ -389,8 +379,7 @@ const CategoryOffers = () => {
       const response = await fetch(FAV_OFFER_API_URL, {
         method: "DELETE",
         headers: {
-          "Content-Type":
-            "application/x-www-form-urlencoded;charset=UTF-8",
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
           "X-API-KEY": auth.token,
         },
         body: formBody.toString(),
@@ -415,8 +404,7 @@ const CategoryOffers = () => {
 
       if (!response.ok) {
         alert(
-          (data && data.message) ||
-            "Erreur lors de la suppression du favori."
+          (data && data.message) || "Erreur lors de la suppression du favori."
         );
         setFavLoading(false);
         return;

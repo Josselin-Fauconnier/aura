@@ -277,13 +277,11 @@ const CategoryPage = () => {
   const [errorOffers, setErrorOffers] = useState(null);
 
   const [selectedOffer, setSelectedOffer] = useState(null);
-  const [currentTestimonialIndex, setCurrentTestimonialIndex] =
-    useState(0);
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
 
   const isCustomer = false;
 
-  const getProviderLabel = (offer) =>
-    offer.provider_name || "Prestataire Aura";
+  const getProviderLabel = (offer) => offer.provider_name || "Prestataire Aura";
 
   const fetchOffers = async () => {
     setLoadingOffers(true);
@@ -307,7 +305,7 @@ const CategoryPage = () => {
       let data = null;
       try {
         data = JSON.parse(rawText);
-      } catch (e) {
+      } catch {
         console.warn("Réponse non-JSON CategoryPage offers :", rawText);
         setErrorOffers(
           "La réponse du serveur n'est pas au format JSON. Vérifiez l'API."
